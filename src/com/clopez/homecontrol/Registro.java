@@ -1,10 +1,9 @@
 package com.clopez.homecontrol;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Registro {
@@ -52,17 +51,16 @@ public class Registro {
 		t1 = t1/temp.length;
 		t2 = t2/temp.length;
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY MM HH mm");
-		LocalTime d = LocalTime.now();
-		return d.format(dtf) + " : " + String.format("%.1f", t1) + " : " + String.format("%.1f", t2) + " : " + String.valueOf(caldera);
+		return dtf.format(LocalDateTime.now()) + " : " + String.format("%.1f", t1) + " : " + String.format("%.1f", t2) + " : " + String.valueOf(caldera);
 	}
 	
 	private void save(String linea) {
 		try {
-			File f = new File(fileName);
-		    long fileLength = f.length();
-			RandomAccessFile fd = new RandomAccessFile(fileName, "w");
-			fd.seek(fileLength);
-			fd.writeBytes(linea);
+			FileWriter f = new FileWriter(fileName, true);
+			BufferedWriter fd = new BufferedWriter(f);
+			fd.write(linea);
+			fd.newLine();
+			fd.flush();
 			fd.close();
 		} catch (IOException e) {
 			e.printStackTrace();

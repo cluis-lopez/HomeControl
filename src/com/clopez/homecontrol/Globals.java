@@ -40,7 +40,10 @@ public class Globals {
 				fd.close();
 				Gson gson = new Gson();
 				globals = gson.fromJson(new String(b), new TypeToken<ArrayList<Object>>() {}.getType());
-			} catch (IOException e) {
+			} catch (FileNotFoundException e) {
+				// Si no existe el fichero es la primera vez que arranca el programa o hay un error catastrófico
+			}
+			catch (IOException e) {
 				System.err.println("Error de entrada salida");
 				e.printStackTrace();
 			}
