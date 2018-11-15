@@ -13,7 +13,7 @@ public class Globals {
 
 		public enum ModeOp{APAGADO, MANUAL, PROGRAMADO};
 		int modeOp;
-		Double tempManual;
+		float tempManual;
 		Calendario calendario;
 		
 		List<Object> globals;
@@ -21,8 +21,8 @@ public class Globals {
 		public Globals() {
 			calendario = new Calendario();
 			modeOp = ModeOp.APAGADO.ordinal();
-			tempManual = 0.0;
-			globals = new ArrayList<Object>();
+			tempManual = 0;
+			globals = new ArrayList<>();
 			globals.add(modeOp);
 			globals.add(tempManual);
 			globals.add(calendario);
@@ -40,12 +40,10 @@ public class Globals {
 				fd.close();
 				Gson gson = new Gson();
 				globals = gson.fromJson(new String(b), new TypeToken<ArrayList<Object>>() {}.getType());
-			} catch (FileNotFoundException e) {
-				System.out.println("No existe el fichero GLOBALS");
 			} catch (IOException e) {
 				System.err.println("Error de entrada salida");
 				e.printStackTrace();
-			} 
+			}
 		}
 		
 		/**
