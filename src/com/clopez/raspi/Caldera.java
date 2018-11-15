@@ -26,7 +26,16 @@ public class Caldera {
 		return true;
 	}
 
-	public static void Arranca (String calderaIP) {
-
+	public static int ActuaCaldera (String calderaIP, boolean estado) {
+		int result = 0;
+		try {
+			URL url = new URL("http://"+calderaIP+"/1/on");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			result =  con.getResponseCode();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		return result;
 	}
 }
