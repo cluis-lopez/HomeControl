@@ -19,6 +19,7 @@ public class Caldera {
 			while ((inputLine = in.readLine()) != null) {
 				content.append(inputLine);
 			}
+			// Chequear el contenido para saber si los relés están activados o no
 			in.close();
 		} catch (IOException e){
 			e.printStackTrace();
@@ -26,13 +27,30 @@ public class Caldera {
 		return true;
 	}
 
-	public static int ActuaCaldera (String calderaIP, boolean estado) {
-		int result = 0;
+	public static int[] ActuaCaldera (String calderaIP, boolean estado) {
+		int[] result = { 0, 0};
+		String accion ="";
+		
+		if (estado) {
+			accion = "on";
+		} else {
+			accion = "off";
+		}
+		
 		try {
-			URL url = new URL("http://"+calderaIP+"/1/on");
+			URL url = new URL("http://"+calderaIP+"/1/"+accion);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
-			result =  con.getResponseCode();
+			result[0] =  con.getResponseCode();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		try {
+			URL url = new URL("http://"+calderaIP+"/2/"+accion);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			result[1] =  con.getResponseCode();
 		} catch (IOException e){
 			e.printStackTrace();
 		}

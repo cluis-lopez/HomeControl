@@ -19,7 +19,8 @@ public class DHT11 {
 		GpioUtil.export(3, GpioUtil.DIRECTION_OUT);
 	}
 
-	public void getTemperature(final int pin) {
+	public float[] getTempHum(final int pin) {
+		float[] result = new float[2];
 		int laststate = Gpio.HIGH;
 		int j = 0;
 		dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
@@ -71,10 +72,15 @@ public class DHT11 {
 			if ((dht11_dat[2] & 0x80) != 0) {
 				c = -c;
 			}
-			final float f = c * 1.8f + 32;
-			System.out.println("Humidity = " + h + " Temperature = " + c + "(" + f + "f)");
+			//final float f = c * 1.8f + 32;
+			//System.out.println("Humidity = " + h + " Temperature = " + c + "(" + f + "f)");
+			result[0] = c; // Temperatura
+			result[1] = h; // Humedad
+			return result;
 		} else {
-			System.out.println("Data not good, skip");
+			//System.out.println("Data not good, skip");
+			result[0] = 99; result[1] = 99;
+			return result;
 		}
 
 	}
@@ -89,7 +95,7 @@ public class DHT11 {
 
 		for (int i = 0; i < 10; i++) {
 			Thread.sleep(2000);
-			dht.getTemperature(21);
+			dht.getTempHum(21);
 		}
 
 		System.out.println("Done!!");
