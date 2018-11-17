@@ -5,16 +5,16 @@ import java.time.LocalTime;
 
 public class Calendario {
 	
-	private Double[][][] dias;
+	private float [][][] dias;
 	
 	public Calendario() {
-		dias = new Double[7][24][2]; // 7 días, 24 horas, 2 tramos de media hora
+		dias = new float [7][24][2]; // 7 días, 24 horas, 2 tramos de media hora
 	}
 	
 	/**
 	 * @param Double The default temperature to fill up the calendar
 	 */
-	public Calendario(Double tempDefecto) {
+	public Calendario(float tempDefecto) {
 		new Calendario();
 		for (int i = 0; i<7; i++)
 			for (int j = 0; j<24; j++) {
@@ -22,7 +22,7 @@ public class Calendario {
 			}
 	}
 	
-	public Double[][][] getDias() {
+	public float [][][] getDias() {
 		return dias;
 	}
 	
@@ -32,7 +32,7 @@ public class Calendario {
 	 * @param horafin The last hor:minute to program (rounded to previous half hour. Ex: 18:47 will round to 18:30)
 	 * @param temp The temperature to program during the period
 	 */
-	public void setTemp(int dia, LocalTime horainicio, LocalTime horafin, Double temp) {
+	public void setTemp(int dia, LocalTime horainicio, LocalTime horafin, float temp) {
 		int inicioHora = horainicio.getHour();
 		int inicioMin = horainicio.getMinute()/30; //inicioMin = 0 o 1
 		int finHora = horafin.getHour();
@@ -46,7 +46,7 @@ public class Calendario {
 	/**
 	 * @return The temperature programmed for the current day of the week at the current time
 	 */
-	public Double getTempTargetNow() {
+	public float getTempTargetNow() {
 		LocalDateTime now = LocalDateTime.now(); //La fecha actual
 		int diasemana = now.getDayOfWeek().getValue() - 1; //El dia de la semana actual Lunes = 0, Martes = 1, ... Domingo = 6
 		int hora = now.getHour(); // Hora entre 0 y 23
