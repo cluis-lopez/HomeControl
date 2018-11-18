@@ -12,11 +12,11 @@ import com.google.gson.reflect.TypeToken;
 public class Globals {
 
 		public enum ModeOp{APAGADO, MANUAL, PROGRAMADO};
-		int modeOp;
-		float tempManual;
-		Calendario calendario;
+		public int modeOp;
+		public float tempManual;
+		public Calendario calendario;
 		
-		List<Object> globals;
+		private List<Object> globals;
 		
 		public Globals() {
 			calendario = new Calendario();
@@ -40,6 +40,9 @@ public class Globals {
 				fd.close();
 				Gson gson = new Gson();
 				globals = gson.fromJson(new String(b), new TypeToken<ArrayList<Object>>() {}.getType());
+				modeOp = (int) globals.get(0);
+				tempManual = (float) globals.get(1);
+				calendario = (Calendario) globals.get(2);
 			} catch (FileNotFoundException e) {
 				// Si no existe el fichero es la primera vez que arranca el programa o hay un error catastrófico
 			}
