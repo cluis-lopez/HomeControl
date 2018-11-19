@@ -23,18 +23,17 @@ public class Registro {
 	 * @param tempActual The current meassured temperature
 	 * @param humActual The current humedity meassured by the DHT11 sensor
 	 * @param tempTarget The target temperature set in MANUAL mode or coming from the program (PROGRAMADO mode)
-	 * @param estadoCaldera ON if the relays are ON, OFF otherwise
+	 * @param estadoCaldera true if the relays are ON, false otherwise
 	 */
 	public void add(int modeOp, float tempActual, float humActual, float tempTarget, boolean estadoCaldera) {
-		if (contador <lineas.length) {
-			lineas[contador] = new LineaRegistro(modeOp, tempActual, humActual, tempTarget, estadoCaldera);
-			contador++;
-		} else {
+		if (contador == lineas.length) {
 			contador = 0;
 			this.save(average(lineas));
 		}
+		lineas[contador] = new LineaRegistro(modeOp, tempActual, humActual, tempTarget, estadoCaldera);
+		contador++;
 	}
-	
+
 	/**
 	 * @param temp Temporary array of LineasRegistro
 	 * @return A formatted String with the creation date and the average values fore the metered tempt., the target tempt.
@@ -54,8 +53,8 @@ public class Registro {
 		t1 = t1/temp.length;
 		t2 = t2/temp.length;
 		h = h/temp.length;
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY MM HH mm");
-		return dtf.format(LocalDateTime.now()) + " : " + String.format("%.1f", t1) + " : " + String.format("%.1f", t2) + " : " + caldera;
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd HH-mm-ss");
+		return dtf.format(LocalDateTime.now()) + " : " + String.format("%.1f", t1) + " : " + String.format("%.2f%%", h) + " : " + String.format("%.1f", t2) + " : " + caldera;
 	}
 	
 	private void save(String linea) {

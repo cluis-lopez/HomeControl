@@ -3,35 +3,25 @@ package com.clopez.homecontrol;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.clopez.homecontrol.GlobalVars.ModeOp;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class Globals {
-
-		public enum ModeOp{APAGADO, MANUAL, PROGRAMADO};
-		public int modeOp;
-		public float tempManual;
-		public Calendario calendario;
 		
-		private List<Object> globals;
+		private GlobalVars gv;
+		private String filename;
 		
-		public Globals() {
-			calendario = new Calendario();
-			modeOp = ModeOp.APAGADO.ordinal();
-			tempManual = 0;
-			globals = new ArrayList<>();
-			globals.add(modeOp);
-			globals.add(tempManual);
-			globals.add(calendario);
+		public Globals(float tempDefecto) {
+			gv = new GlobalVars(tempDefecto);
 		}
 		
 		/**
 		 * @param filename The file where the object is serialized and stored
 		 */
 		public Globals(String filename) {
+			this.filename = filename;
 			RandomAccessFile fd;
 			try {
 				fd = new RandomAccessFile(filename, "r");
@@ -39,12 +29,10 @@ public class Globals {
 				fd.readFully(b);
 				fd.close();
 				Gson gson = new Gson();
-				globals = gson.fromJson(new String(b), new TypeToken<ArrayList<Object>>() {}.getType());
-				modeOp = (int) globals.get(0);
-				tempManual = (float) globals.get(1);
-				calendario = (Calendario) globals.get(2);
+				gv = gson.fromJson(new String(b), new TypeToken<GlobalVars>() {}.getType());
 			} catch (FileNotFoundException e) {
-				// Si no existe el fichero es la primera vez que arranca el programa o hay un error catastrófico
+				// Si no existe el fichero es la primera vez que arranca el programa o hay un error catastrofico
+				System.out.println("No existe el fichero");
 			}
 			catch (IOException e) {
 				System.err.println("Error de entrada salida");
@@ -55,9 +43,9 @@ public class Globals {
 		/**
 		 * @param filename The file where the global variables are saved
 		 */
-		public void saveGlobals(String filename) {
+		public void saveGlobals() {
 			Gson gson = new Gson();
-			String json = gson.toJson(globals);
+			String json = gson.toJson(gv);
 			try {
 				RandomAccessFile fd = new RandomAccessFile(filename, "rw");
 				fd.writeBytes(json);
@@ -68,4 +56,30 @@ public class Globals {
 			}
 		}
 		
+		public int getModeOp() {
+			return gv.modeOp;
+		}
+		
+		public float getTempManual() {
+			 return gv.tempManual;
+		}
+		
+		public Calendario getCalendario() {
+			return gv.calendario;
+		}
+		
+		public void setModeOp(ModeOp mode) {
+			gv.modeOp = mode.getValue();
+			saveGlobals();
+		}
+		
+		public void setTempManual(float tempManual) {
+			gv.tempManual = tempManual;
+			saveGlobals();
+		}
+		
+		public void setCalendario(Calendario calendario) {
+			gv.calendario = calendario;
+			saveGlobals();
+		}
 }

@@ -1,6 +1,6 @@
 package com.clopez.homecontrol;
 
-import com.clopez.homecontrol.Globals.ModeOp;
+import com.clopez.homecontrol.GlobalVars.ModeOp;
 import com.clopez.raspi.Caldera;
 import com.clopez.raspi.DHT11;
 
@@ -23,11 +23,11 @@ public class ControlMonitor {
 			estado = Caldera.Estado(CalderaIP);
 			currentTemp = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[0];
 			currentHum = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[1];
-			if (globals.modeOp != ModeOp.APAGADO.ordinal()) { // El modo es MANUAL o PROGRAMADO
-				if (globals.modeOp == ModeOp.MANUAL.ordinal())
-					tempTarget = globals.tempManual;
-				if (globals.modeOp == ModeOp.PROGRAMADO.ordinal())
-					tempTarget = globals.calendario.getTempTargetNow();
+			if (globals.getModeOp() != ModeOp.APAGADO.getValue()) { // El modo es MANUAL o PROGRAMADO
+				if (globals.getModeOp() == ModeOp.MANUAL.getValue())
+					tempTarget = globals.getTempManual();
+				if (globals.getModeOp() == ModeOp.PROGRAMADO.getValue())
+					tempTarget = globals.getCalendario().getTempTargetNow();
 				if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
 					if (! estado) // Si la caldera esta apagada, la encendemos
 						Caldera.ActuaCaldera(CalderaIP, true);

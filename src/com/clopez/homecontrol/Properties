@@ -1,4 +1,0 @@
-CalderaIP = 192.168.1.18
-SensorPIN = 22
-Intervalo = 5 // En minutos
-numIntervalos = 6 // Cada cuantos intervalos, escribimos en el fichero Historico
