@@ -28,7 +28,7 @@ public class Caldera {
 	}
 
 	public static int[] ActuaCaldera (String calderaIP, boolean estado) {
-		int[] result = { 0, 0};
+		int[] result = {0, 0};
 		String accion ="";
 		
 		if (estado) {

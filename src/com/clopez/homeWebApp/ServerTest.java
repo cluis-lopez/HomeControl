@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.clopez.homecontrol.GlobalVars;
 import com.clopez.homecontrol.Globals;
+import com.clopez.homecontrol.variablesExternas;
+import com.clopez.raspi.Caldera;
 import com.google.gson.Gson;
 
 /**
@@ -32,8 +34,10 @@ public class ServerTest extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		// Imprime el estado
+		variablesExternas v = new variablesExternas("Properties");
 		Globals g = new Globals("GLOBALS");
 		GlobalVars gv = g.getGlobals();
+		boolean estado = Caldera.Estado(v.get("CalderaIP"));
 		Gson gson = new Gson();
 		String json = gson.toJson(gv);
 				
