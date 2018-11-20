@@ -56,6 +56,9 @@ public class Globals {
 			}
 		}
 		
+		public GlobalVars getGlobals() {
+			return gv;
+		}
 		public int getModeOp() {
 			return gv.modeOp;
 		}

@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.clopez.homecontrol.GlobalVars;
 import com.clopez.homecontrol.Globals;
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class SeverTest
@@ -27,11 +29,19 @@ public class SeverTest extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		// Imprime el estado
 		Globals g = new Globals("GLOBALS");
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		GlobalVars gv = g.getGlobals();
+		Gson gson = new Gson();
+		String json = gson.toJson(gv);
+				
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+		resp.setHeader("cache-control", "no-cache");
+		resp.getWriter().write(json);
+		resp.flushBuffer();
 	}
 
 }
