@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
+
+import com.clopez.homecontrol.variablesExternas;
 
 public class Caldera {
 
@@ -20,11 +23,22 @@ public class Caldera {
 				content.append(inputLine);
 			}
 			// Chequear el contenido para saber si los relés están activados o no
+			// esto es muy cutre y habría que cambiar el servidor web en el ESP8266 para hacer algo más simple
+			int i = content.indexOf("(Caldera)");
+			int j = content.indexOf("(Bomba)");
+			//Debug below
+			//System.out.println("Caldera  " + content.substring(i+18, i+20));
+			//System.out.println("Bomba  " + content.substring(j+16, j+18));
+			if (i != -1 && j != -1) {
+				if (content.substring(i+18, i+20).equals("ON") && content.substring(j+16, j+18).equals("ON"))
+					return true;
+			}
 			in.close();
 		} catch (IOException e){
+			System.err.println("No puedo conectar con los reles de la caldera");
 			e.printStackTrace();
 		}
-		return true;
+		return false;
 	}
 
 	public static int[] ActuaCaldera (String calderaIP, boolean estado) {
@@ -52,8 +66,20 @@ public class Caldera {
 			con.setRequestMethod("GET");
 			result[1] =  con.getResponseCode();
 		} catch (IOException e){
+			System.err.println("No puedo conectar con los reles de la caldera");
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public static void main (String[] args) { // For debugging purposes
+		variablesExternas v = new variablesExternas("WebContent/WEB-INF/Properties");
+		boolean est = Estado(v.get("CalderaIP"));
+		Scanner sc = new Scanner(System.in);
+		System.out.println("El estado de la caldera es : " + (est ? "ON" : "OFF"));
+		System.out.println("Pulsa para cabiar el estado o CRTL-C para salir");
+		sc.nextLine();
+		ActuaCaldera(v.get("CalderaIP"), !est);
+		sc.close();
 	}
 }
