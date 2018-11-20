@@ -15,13 +15,13 @@ import com.google.gson.Gson;
  * Servlet implementation class SeverTest
  */
 @WebServlet("/SeverTest")
-public class SeverTest extends HttpServlet {
+public class ServerTest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SeverTest() {
+    public ServerTest() {
         super();
         // TODO Auto-generated constructor stub
     }
