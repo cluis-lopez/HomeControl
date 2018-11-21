@@ -9,23 +9,24 @@
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 	<link rel="stylesheet" type="text/css" href="icons/css/fontello.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="index.js"></script>
 </head>
 <body>
-<div class="header">
-	<div class="maintitle">Home Control</div>
-	<div class="mainmenu">
-	    <button class="menubtn">
-      		<i class="icon icon-menu"></i>
-    	</button>
-		<div class="menu-content">
-			<ul class="menu-list">
-    		<li class="menu-item">Control</li>
-    		<li class="menu-item">Programacion</li>
-    		<li class="menu-item">Historico</li>
-    		<li class="menu-item">About</li>
-    		</ul>
-		</div>
-	</div>
+<!-- Top Navigation Menu -->
+<div class="topnav">
+  <p id="logo">Home Monitor</p>
+  <!-- Navigation links (hidden by default) -->
+  <div id="myLinks">
+    <a href="#monitor">Monitor</a>
+    <a href="#control">Control</a>
+    <a href="#program">Programar</a>
+    <a href="#historic">Historico</a>
+    <a href="#about">About</a>
+  </div>
+  <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+    <i class="icon icon-menu"></i>
+  </a>
 </div>
 </body>
 </html>
