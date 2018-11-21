@@ -1,13 +1,16 @@
 package com.clopez.homeWebApp;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.clopez.homecontrol.GlobalVars;
+import com.clopez.homecontrol.GlobalVars.ModeOp;
 import com.clopez.homecontrol.Globals;
 import com.clopez.homecontrol.variablesExternas;
 import com.clopez.raspi.Caldera;
@@ -34,12 +37,38 @@ public class ServerTest extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		// Imprime el estado
-		variablesExternas v = new variablesExternas("Properties");
+		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
+		variablesExternas v = new variablesExternas(in);
 		Globals g = new Globals("GLOBALS");
-		GlobalVars gv = g.getGlobals();
+		// DHT11 sensor = new DHT11();
+		
 		boolean estado = Caldera.Estado(v.get("CalderaIP"));
+		//float currentTemp = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[0];
+		//float currentHum = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[1];
+		
+		float currentTemp = 19.2f; // Debug
+		float currentHum = 0.33f; //Debug
+		float tempTarget = 9999f;
+		
+		if (g.getModeOp() != ModeOp.APAGADO.getValue()) { // El modo es MANUAL o PROGRAMADO
+			if (g.getModeOp() == ModeOp.MANUAL.getValue())
+				tempTarget = g.getTempManual();
+			if (g.getModeOp() == ModeOp.PROGRAMADO.getValue())
+				tempTarget = g.getCalendario().getTempTargetNow();
+		}
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("modeOp", g.getModeOp());
+		map.put("estado", (estado ? "ON" : "OFF"));
+		map.put("currentTemp", currentTemp);
+		map.put("currentHum", currentHum);
+		map.put("tempTarget", tempTarget);
+		map.put("calendario", g.getCalendario());
+
+		
+		
 		Gson gson = new Gson();
-		String json = gson.toJson(gv);
+		String json = gson.toJson(map);
 				
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
@@ -47,5 +76,9 @@ public class ServerTest extends HttpServlet {
 		resp.getWriter().write(json);
 		resp.flushBuffer();
 	}
-
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO
+	}
 }
+

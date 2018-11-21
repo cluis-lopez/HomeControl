@@ -2,9 +2,119 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Pagina Test Sistema</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+	type="text/javascript"></script>
+<style type="text/css">
+body {
+	font-family: helvetica;
+}
+
+table {
+	width: 50%;
+	border: 1px;
+}
+
+th, td {
+	padding: 7px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+	border-up: 1px solid #ddd;
+}
+
+.modeOp {
+	border: 1px solid black;
+	padding: 10px;
+}
+</style>
 </head>
 <body>
+	<h1>Estado del Sistema</h1>
+	<div>
+		<table>
+			<tr>
+				<td>Caldera Bomba</td>
+				<td id="estado"></td>
+			</tr>
+			<tr>
+				<td>Temperatura Ambiente</td>
+				<td id="currentTemp"></td>
+			</tr>
+			<tr>
+				<td>Humedad Ambiente</td>
+				<td id="currentHum"></td>
+			</tr>
+			<tr>
+				<td>Modo de Operación</td>
+				<td id="modeOp"></td>
+			</tr>
+			<tr>
+				<td>Temperatura Objetivo</td>
+				<td id="tempTarget"></td>
+			</tr>
+		</table>
+	</div>
+	<!-- <div>
+<h1>Programacion Semanal Temperatura</h1>
+<table id="calendar">
+<tr id="horas">
+</table>
+</div> -->
+	<div>
+		<h1>Par&aacute;metros del Sistema</h1>
+		<div class="modeOp">
+			<h3>Modo de Operaci&oacute;n</h3>
+			<form action="">
+				<input type="radio" name="modeOp" value="OFF">OFF<br>
+				<input type="radio" name="modeOp" value="Manual">Manual<br>
+				<input type="radio" name="modeOp" value="Programa">Programa<br><br>
+				<input type="submit" id="modeOp">
+			</form>
+		</div>
+		<br>
+		<div class="modeOp">
+		<h3>Temperatura Objetivo</h3>
+		<form action="">
+			<input type="range" name="tempTarget" min="10" max="40">
+			<br><br>
+			<input type="submit" id="tempTarget">
+		</form>
+		</div>
+</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
 
+			/* 	for (i=0; i<24; i++){
+			 $("#horas").append("<th>"+i+":00 - "+i+":30</th><th>"+i+":30 - "+(i+1)+":00</th><th>");
+			 $("#horas").append("</tr>");
+			 }
+			 for (i=0; i<7; i++){
+			 $("#horas").append("<tr><td id='dia"+i+"' dia</td>");
+			 for (j=0;j<24; j++){
+			 $("#horas").append("<td id='hora"+j+"0'>test00</td><td id='hora'"+j+"1'>test01</td>");
+			 }
+			 $("#horas").append("</tr>");
+			 } */
+
+			$.get("ServerTest", function(data, status) {
+				$("#estado").text(data.estado);
+				$("#currentTemp").text(data.currentTemp);
+				$("#currentHum").text(data.currentHum);
+				var modo = "";
+				switch (data.modeOp) {
+				case 0:
+					modo = "OFF";
+				case 1:
+					modo = "MANUAL";
+				case 2:
+					modo = "PROGRAMADO";
+				}
+				$("#modeOp").text(modo);
+				$("#tempTarget").text(data.tempTarget);
+			});
+
+		});
+	</script>
 </body>
 </html>

@@ -1,7 +1,10 @@
 package com.clopez.raspi;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -73,7 +76,14 @@ public class Caldera {
 	}
 	
 	public static void main (String[] args) { // For debugging purposes
-		variablesExternas v = new variablesExternas("WebContent/WEB-INF/Properties");
+		InputStream in = null;
+		try {
+			in = new FileInputStream("WebContent/WEB-INF/Properties");
+		} catch (FileNotFoundException e) {
+			System.err.println("No puedo abrir el fichero de propiedades");
+			e.printStackTrace();
+		}
+		variablesExternas v = new variablesExternas(in);
 		boolean est = Estado(v.get("CalderaIP"));
 		Scanner sc = new Scanner(System.in);
 		System.out.println("El estado de la caldera es : " + (est ? "ON" : "OFF"));
