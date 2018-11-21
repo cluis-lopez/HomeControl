@@ -14,7 +14,11 @@ import com.clopez.homecontrol.variablesExternas;
 
 public class Caldera {
 
-	public static boolean Estado(String calderaIP) {
+	/**
+	 * @param calderaIP IP address of the relay controller
+	 * @return 0 if both relays are OFF, 1 if both relays are ON, -1 if the controller is unreachable, 2 if there's a conflict (ie. boiler ON and pump OFF)
+	 */
+	public static int Estado(String calderaIP) {
 		try {
 			URL url = new URL("http://"+calderaIP);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -34,28 +38,26 @@ public class Caldera {
 			//System.out.println("Bomba  " + content.substring(j+16, j+18));
 			if (i != -1 && j != -1) {
 				if (content.substring(i+18, i+20).equals("ON") && content.substring(j+16, j+18).equals("ON"))
-					return true;
+					return 1;
+				else if (content.substring(i+18, i+20).equals("OF") && content.substring(j+16, j+18).equals("OF"))
+					return 0;
+				else
+					return 2;
 			}
 			in.close();
 		} catch (IOException e){
 			System.err.println("No puedo conectar con los reles de la caldera");
 			e.printStackTrace();
+			return -1;
 		}
-		return false;
+		return -1;
 	}
 
-	public static int[] ActuaCaldera (String calderaIP, boolean estado) {
+	public static int[] ActuaCaldera (String calderaIP, String estado) {
 		int[] result = {0, 0};
-		String accion ="";
-		
-		if (estado) {
-			accion = "on";
-		} else {
-			accion = "off";
-		}
 		
 		try {
-			URL url = new URL("http://"+calderaIP+"/1/"+accion);
+			URL url = new URL("http://"+calderaIP+"/1/"+estado);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			result[0] =  con.getResponseCode();
@@ -64,7 +66,7 @@ public class Caldera {
 		}
 		
 		try {
-			URL url = new URL("http://"+calderaIP+"/2/"+accion);
+			URL url = new URL("http://"+calderaIP+"/2/"+estado);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			result[1] =  con.getResponseCode();
@@ -84,12 +86,33 @@ public class Caldera {
 			e.printStackTrace();
 		}
 		variablesExternas v = new variablesExternas(in);
-		boolean est = Estado(v.get("CalderaIP"));
+		int est = Estado(v.get("CalderaIP"));
+		String estado = "";
+		switch (est) {
+		case 0:
+			estado = "off";
+			break;
+		case 1:
+			estado = "on";
+			break;
+		case 2:
+			estado = "WARNING";
+			break;
+		case -1:
+			estado ="CONEXION";
+			break;
+	}
+		String accion="";
 		Scanner sc = new Scanner(System.in);
-		System.out.println("El estado de la caldera es : " + (est ? "ON" : "OFF"));
+		System.out.println("El estado de la caldera es : " + estado);
 		System.out.println("Pulsa para cabiar el estado o CRTL-C para salir");
 		sc.nextLine();
-		ActuaCaldera(v.get("CalderaIP"), !est);
+		if (est == 0)
+			accion = "on";
+		if (est == 1)
+			accion = "off";
+			
+		ActuaCaldera(v.get("CalderaIP"), accion);
 		sc.close();
 	}
 }

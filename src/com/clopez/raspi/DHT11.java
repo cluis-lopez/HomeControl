@@ -92,10 +92,13 @@ public class DHT11 {
 	public static void main(final String ars[]) throws Exception {
 
 		final DHT11 dht = new DHT11();
+		float[] sensor = new float[2];
 
 		for (int i = 0; i < 10; i++) {
 			Thread.sleep(2000);
-			dht.getTempHum(21);
+			sensor = dht.getTempHum(3);
+			System.out.println("Temperatura: " + sensor[0]);
+			System.out.println("Humedad :" + sensor[1]);
 		}
 
 		System.out.println("Done!!");

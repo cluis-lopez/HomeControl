@@ -25,7 +25,7 @@ public class ControlMonitor {
 		Registro reg = new Registro("Historico.log", Integer.parseInt(v.get("numIntervalos"))); // Fichero historico
 		DHT11 sensor = new DHT11();
 		
-		boolean estado;
+		int estado;
 		float currentTemp, currentHum;
 		float tempTarget=9999;
 		String CalderaIP = v.get("CalderaIP");
@@ -41,15 +41,15 @@ public class ControlMonitor {
 				if (globals.getModeOp() == ModeOp.PROGRAMADO.getValue())
 					tempTarget = globals.getCalendario().getTempTargetNow();
 				if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
-					if (! estado) // Si la caldera esta apagada, la encendemos
-						Caldera.ActuaCaldera(CalderaIP, true);
+					if (estado == 0) // Si la caldera esta apagada, la encendemos
+						Caldera.ActuaCaldera(CalderaIP, "on");
 				} else { // La tempratura medida es igual o mayor que la deseada
-					if (estado) // La caldera está encendida
-						Caldera.ActuaCaldera(CalderaIP, false); // Se apaga la caldera	
+					if (estado == 1) // La caldera está encendida
+						Caldera.ActuaCaldera(CalderaIP, "off"); // Se apaga la caldera	
 				}
 			} else { // El modo es apagado, comprobamos que la caldera esté apagada
-				if (estado) // La caldera está encendida
-					Caldera.ActuaCaldera(CalderaIP, false);
+				if (estado == 1) // La caldera está encendida
+					Caldera.ActuaCaldera(CalderaIP, "off");
 			}
 				
 			

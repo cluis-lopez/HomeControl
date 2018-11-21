@@ -88,9 +88,9 @@ th, td {
 		<div class="modeOp">
 			<h3>Modo de Operaci&oacute;n</h3>
 			<form action="">
-				<input type="radio" name="modeOp" value="OFF">OFF<br>
-				<input type="radio" name="modeOp" value="Manual">Manual<br>
-				<input type="radio" name="modeOp" value="Programa">Programa<br><br>
+				<input type="radio" name="modeOp" value="0">OFF<br>
+				<input type="radio" name="modeOp" value="1">Manual<br>
+				<input type="radio" name="modeOp" value="2">Programa<br><br>
 				<input type="submit" id="modeOp">
 			</form>
 		</div>
@@ -107,19 +107,10 @@ th, td {
 </div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-
-			/* 	for (i=0; i<24; i++){
-			 $("#horas").append("<th>"+i+":00 - "+i+":30</th><th>"+i+":30 - "+(i+1)+":00</th><th>");
-			 $("#horas").append("</tr>");
-			 }
-			 for (i=0; i<7; i++){
-			 $("#horas").append("<tr><td id='dia"+i+"' dia</td>");
-			 for (j=0;j<24; j++){
-			 $("#horas").append("<td id='hora"+j+"0'>test00</td><td id='hora'"+j+"1'>test01</td>");
-			 }
-			 $("#horas").append("</tr>");
-			 } */
-
+			
+			var tempClient = 21;
+			var modeClient = 0;
+			
 			$.get("ServerTest", function(data, status) {
 				$("#estado").text(data.estado);
 				$("#currentTemp").text(data.currentTemp);
@@ -144,6 +135,24 @@ th, td {
 			 // Update the current slider value (each time you drag the slider handle)
 			 slider.oninput = function() {
 			     output.innerHTML = this.value;
+			 }
+			 
+			 $("#modeOp").click(function(){
+				postea ($('input:radio[name="modeOp"]:checked').val()); 
+			 });
+			 
+			 function postea(tempClient, modeClient){
+				 $.ajax({
+						url: "/ServerTest",
+						type: "POST",
+						data: {tc: tempClient, mc: modeClient},
+						dataType: "json",
+						success: function (data,status,xhr){
+							if(data != "OK") { // Values sent
+								alert("Data: " + data + "\nStatus: " + status);
+							}
+						}
+					});
 			 }
 });
 	</script>

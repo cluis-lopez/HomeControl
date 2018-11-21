@@ -42,7 +42,7 @@ public class ServerTest extends HttpServlet {
 		Globals g = new Globals("GLOBALS");
 		// DHT11 sensor = new DHT11();
 		
-		boolean estado = Caldera.Estado(v.get("CalderaIP"));
+		int estado = Caldera.Estado(v.get("CalderaIP"));
 		//float currentTemp = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[0];
 		//float currentHum = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[1];
 		
@@ -59,11 +59,24 @@ public class ServerTest extends HttpServlet {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("modeOp", g.getModeOp());
-		map.put("estado", (estado ? "ON" : "OFF"));
 		map.put("currentTemp", currentTemp);
 		map.put("currentHum", currentHum);
 		map.put("tempTarget", tempTarget);
 		map.put("calendario", g.getCalendario());
+		switch (estado) {
+			case 0:
+				map.put("estado", "OFF");
+				break;
+			case 1:
+				map.put("estado", "ON");
+				break;
+			case 2:
+				map.put("estado", "WARNING");
+				break;
+			case -1:
+				map.put("estado", "CONEXION");
+				break;
+		}
 
 		
 		
@@ -78,7 +91,9 @@ public class ServerTest extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO
+		Globals g = new Globals("GLOBALS");
+		req.getParameter("data");
+		System.out.println("En el post");
 	}
 }
 
