@@ -45,7 +45,7 @@ public class ServerTest extends HttpServlet {
 		
 		int estado = Caldera.Estado(v.get("CalderaIP"));
 		float currentTemp = SensorPythonWrapper.sensor(path, v.get("SensorPIN"))[0];
-		float currentHum = SensorPythonWrapper.sensor(path, v.get("SensorPIN"))[0];
+		float currentHum = SensorPythonWrapper.sensor(path, v.get("SensorPIN"))[1];
 		
 		//float currentTemp = 19.2f; // Debug
 		//float currentHum = 0.33f; //Debug

@@ -9,8 +9,8 @@ public class SensorPythonWrapper {
 		public static float[] sensor(String path, String PIN) {
 			float[] tempHum = new float[2];
 			try {
-				System.out.println("Se va a ajecutar: "+"python "+path+"WEB-INF/Python/DHT11Sensor.py "+PIN);
-				Process p = Runtime.getRuntime().exec("python "+path+"WEB-INF/Python/DHT11Sensor.py "+PIN);
+				System.out.println("Se va a ejecutar: "+"/usr/bin/python "+path+"WEB-INF/Python/DHT11Sensor.py "+PIN);
+				Process p = Runtime.getRuntime().exec("/usr/bin/python "+path+"WEB-INF/Python/DHT11Sensor.py "+PIN);
 				BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				String ret = in.readLine();
 				System.out.println("Salida del python: "+ret);
