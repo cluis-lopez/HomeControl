@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import javax.servlet.ServletContext;
+
 import com.clopez.homecontrol.GlobalVars.ModeOp;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -12,6 +14,7 @@ public class Globals {
 		
 		private GlobalVars gv;
 		private String filename;
+		private String path;
 		
 		public Globals(float tempDefecto) {
 			gv = new GlobalVars(tempDefecto);
@@ -23,6 +26,7 @@ public class Globals {
 		public Globals(String filename) {
 			this.filename = filename;
 			RandomAccessFile fd;
+
 			try {
 				fd = new RandomAccessFile(filename, "r");
 				byte b[] = new byte[ (int) fd.length() ];

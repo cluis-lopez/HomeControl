@@ -14,6 +14,7 @@ import com.clopez.homecontrol.GlobalVars.ModeOp;
 import com.clopez.homecontrol.Globals;
 import com.clopez.homecontrol.variablesExternas;
 import com.clopez.raspi.Caldera;
+import com.clopez.raspi.SensorPythonWrapper;
 import com.google.gson.Gson;
 
 /**
@@ -39,15 +40,15 @@ public class ServerTest extends HttpServlet {
 		// Imprime el estado
 		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
 		variablesExternas v = new variablesExternas(in);
-		Globals g = new Globals("GLOBALS");
-		// DHT11 sensor = new DHT11();
+		String path = getServletContext().getRealPath("/");
+		Globals g = new Globals(path+"/WEB-INF/GLOBALS");
 		
 		int estado = Caldera.Estado(v.get("CalderaIP"));
-		//float currentTemp = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[0];
-		//float currentHum = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[1];
+		float currentTemp = SensorPythonWrapper.sensor(path, v.get("SensorPIN"))[0];
+		float currentHum = SensorPythonWrapper.sensor(path, v.get("SensorPIN"))[0];
 		
-		float currentTemp = 19.2f; // Debug
-		float currentHum = 0.33f; //Debug
+		//float currentTemp = 19.2f; // Debug
+		//float currentHum = 0.33f; //Debug
 		float tempTarget = 9999f;
 		
 		if (g.getModeOp() != ModeOp.APAGADO.getValue()) { // El modo es MANUAL o PROGRAMADO
@@ -91,7 +92,8 @@ public class ServerTest extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Globals g = new Globals("GLOBALS");
+		String path = getServletContext().getRealPath("/");
+		Globals g = new Globals(path+"WEB-INF/GLOBALS");
 		req.getParameter("data");
 		System.out.println("En el post");
 	}
