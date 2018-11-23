@@ -5,10 +5,10 @@ public class LineaRegistro {
 	float tempActual;
 	float humActual;
 	float tempTarget;
-	boolean estadoCaldera;
+	int estadoCaldera;
 	
 	
-	public LineaRegistro(int modeOp, float tempActual, float humActual, float tempTarget, boolean estadoCaldera) {
+	public LineaRegistro(int modeOp, float tempActual, float humActual, float tempTarget, int estadoCaldera) {
 		this.modeOp = modeOp;
 		this.tempActual = tempActual;
 		this.humActual = humActual;

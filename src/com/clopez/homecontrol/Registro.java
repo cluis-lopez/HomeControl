@@ -25,7 +25,7 @@ public class Registro {
 	 * @param tempTarget The target temperature set in MANUAL mode or coming from the program (PROGRAMADO mode)
 	 * @param estadoCaldera true if the relays are ON, false otherwise
 	 */
-	public void add(int modeOp, float tempActual, float humActual, float tempTarget, boolean estadoCaldera) {
+	public void add(int modeOp, float tempActual, float humActual, float tempTarget, int estadoCaldera) {
 		if (contador == lineas.length) {
 			contador = 0;
 			this.save(average(lineas));
@@ -43,12 +43,13 @@ public class Registro {
 		float t1 = 0;
 		float t2 = 0;
 		float h = 0;
-		boolean caldera = false;
+		int caldera = 0; // Por defecto, asumimos que la caldera esta apagada
 		for (LineaRegistro t: temp) {
 			t1 = t1 + t.tempActual;
 			t2 = t2 + t.tempTarget;
 			h = h + t.humActual;
-			caldera = caldera || t.estadoCaldera;
+			if (caldera !=0)
+				caldera = t.estadoCaldera;
 		}
 		t1 = t1/temp.length;
 		t2 = t2/temp.length;

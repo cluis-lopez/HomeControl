@@ -7,6 +7,7 @@ import java.io.InputStream;
 import com.clopez.homecontrol.GlobalVars.ModeOp;
 import com.clopez.raspi.Caldera;
 import com.clopez.raspi.DHT11;
+import com.clopez.raspi.SensorPythonWrapper;
 
 public class ControlMonitor {
 
@@ -21,11 +22,12 @@ public class ControlMonitor {
 		}
 		variablesExternas v = new variablesExternas(in); // Fichero con variables externas del programa (IP Adresses, etc.)
 		
-		Globals globals = new Globals("GLOBALS"); // Fichero que serializa el estado de la aplicación
-		Registro reg = new Registro("Historico.log", Integer.parseInt(v.get("numIntervalos"))); // Fichero historico
-		DHT11 sensor = new DHT11();
+		Globals globals = new Globals("WEB-INF/GLOBALS"); // Fichero que serializa el estado de la aplicación
+		Registro reg = new Registro("WEB-INF/Historico.log", Integer.parseInt(v.get("numIntervalos"))); // Fichero historico
+		//DHT11 sensor = new DHT11();
 		
 		int estado;
+		float[] tempHum = new float[2];;
 		float currentTemp, currentHum;
 		float tempTarget=9999;
 		String CalderaIP = v.get("CalderaIP");
@@ -33,13 +35,16 @@ public class ControlMonitor {
 		while (true) {
 			/* Control starts here */
 			estado = Caldera.Estado(CalderaIP);
-			currentTemp = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[0];
-			currentHum = sensor.getTempHum(Integer.parseInt(v.get("SensorPIN")))[1];
+			tempHum = SensorPythonWrapper.sensor("WEB-INF/Python", v.get("SensorPIN"));
+			currentTemp = tempHum[0]; //La temperatura actual
+			currentHum = tempHum[1]; // La humedad actual
+			
 			if (globals.getModeOp() != ModeOp.APAGADO.getValue()) { // El modo es MANUAL o PROGRAMADO
 				if (globals.getModeOp() == ModeOp.MANUAL.getValue())
 					tempTarget = globals.getTempManual();
 				if (globals.getModeOp() == ModeOp.PROGRAMADO.getValue())
 					tempTarget = globals.getCalendario().getTempTargetNow();
+				
 				if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
 					if (estado == 0) // Si la caldera esta apagada, la encendemos
 						Caldera.ActuaCaldera(CalderaIP, "on");
@@ -48,12 +53,15 @@ public class ControlMonitor {
 						Caldera.ActuaCaldera(CalderaIP, "off"); // Se apaga la caldera	
 				}
 			} else { // El modo es apagado, comprobamos que la caldera esté apagada
-				if (estado == 1) // La caldera está encendida
+				if (estado != 0) // La caldera no está apagada
 					Caldera.ActuaCaldera(CalderaIP, "off");
 			}
 				
 			
 			/* Monitor starts here */
+			
+			reg.add(globals.getModeOp(), currentTemp, currentHum, tempTarget, estado);
+			
 			try {
 				Thread.sleep(60 * 1000 * Integer.parseInt(v.get("Intervalo"))); // Convertimos los minutos en milisegundos
 			} catch (InterruptedException e) {
