@@ -94,10 +94,62 @@ public class ServerTest extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
+		variablesExternas v = new variablesExternas(in);
 		String path = getServletContext().getRealPath("/");
 		Globals g = new Globals(path+"WEB-INF/GLOBALS");
-		req.getParameter("data");
-		System.out.println("En el post");
+		
+		float tempManual = Float.parseFloat(req.getParameter("clientTemp"));
+		int modeOp = Integer.parseInt(req.getParameter("clientMode"));
+		
+		System.out.println("En el post: " + tempManual + ":"+ modeOp);
+		
+		if (g.getTempManual() != tempManual || modeOp != g.getModeOp()) { // Hemos cambiado la temperatura manual o el modo de operaion
+			g.setTempManual(tempManual);
+			switch (modeOp) {
+				case 0: 
+					g.setModeOp(ModeOp.APAGADO);
+					break;
+				case 1:
+					g.setModeOp(ModeOp.MANUAL);
+					break;
+				case 2:
+					g.setModeOp(ModeOp.PROGRAMADO);
+					break;
+			}
+			
+			//Y ajustamos el sistema a los nuevos valores
+			
+			String calderaIP = v.get("CalderaIP");
+			float tempTarget = 0f;
+			float currentTemp = SensorPythonWrapper.sensor(path, v.get("SensorPIN"))[0];
+			int estado = Caldera.Estado(calderaIP);
+			
+			if (g.getModeOp() != ModeOp.APAGADO.getValue()) { // El modo es MANUAL o PROGRAMADO
+				if (g.getModeOp() == ModeOp.MANUAL.getValue())
+					tempTarget = g.getTempManual();
+				if (g.getModeOp() == ModeOp.PROGRAMADO.getValue())
+					tempTarget = g.getCalendario().getTempTargetNow();
+				
+				if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
+					if (estado == 0) // Si la caldera esta apagada, la encendemos
+						Caldera.ActuaCaldera(calderaIP, "on");
+				} else { // La tempratura medida es igual o mayor que la deseada
+					if (estado == 1) // La caldera está encendida
+						Caldera.ActuaCaldera(calderaIP, "off"); // Se apaga la caldera	
+				}
+			} else { // El modo es apagado, comprobamos que la caldera esté apagada
+				if (estado != 0) // La caldera no está apagada
+					Caldera.ActuaCaldera(calderaIP, "off");
+			}
+				
+		}
+		
+		resp.setContentType("text/plain");
+		resp.setCharacterEncoding("UTF-8");
+		resp.setHeader("cache-control", "no-cache");
+		resp.getWriter().write("OK");
+		resp.flushBuffer();
 	}
 }
 

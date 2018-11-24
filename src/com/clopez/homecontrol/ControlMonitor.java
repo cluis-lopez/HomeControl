@@ -13,12 +13,14 @@ public class ControlMonitor {
 
 	public static void main(String[] args) {
 		
-		String path = "";
+		String path = args[0] + "/";
+		System.out.println("Path : " + path );
 		InputStream in = null;
 		try {
 			in = new FileInputStream(path+"WEB-INF/Properties");
 		} catch (FileNotFoundException e) {
 			System.err.println("No puedo abrir el fichero de propiedades");
+			System.err.println("Ejecutar: java ConTrolMonitor <path de la webapp>");
 			e.printStackTrace();
 		}
 		variablesExternas v = new variablesExternas(in); // Fichero con variables externas del programa (IP Adresses, etc.)
@@ -35,7 +37,7 @@ public class ControlMonitor {
 		while (true) { //NOSONAR
 			/* Control starts here */
 			estado = Caldera.Estado(calderaIP);
-			tempHum = SensorPythonWrapper.sensor(path+"WEB-INF/Python", v.get("SensorPIN"));
+			tempHum = SensorPythonWrapper.sensor(path, v.get("SensorPIN"));
 			currentTemp = tempHum[0]; //La temperatura actual
 			currentHum = tempHum[1]; // La humedad actual
 			

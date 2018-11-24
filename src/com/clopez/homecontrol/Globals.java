@@ -47,7 +47,7 @@ public class Globals {
 		/**
 		 * @param filename The file where the global variables are saved
 		 */
-		public void saveGlobals() {
+		private void saveGlobals() {
 			Gson gson = new Gson();
 			String json = gson.toJson(gv);
 			try {

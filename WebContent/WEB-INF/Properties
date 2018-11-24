@@ -5,7 +5,7 @@ CalderaIP=192.168.1.18
 SensorPIN=22
 
 # How often we check the status of teh system (in minutes)
-Intervalo=5
+Intervalo=1
 
 # How many times we check the status until we summarize the average into a record (i.e. Check every 5 minutes, Summary each 6 intervals: one record each 30 minutes)
-numIntervalos=6
+numIntervalos=3

@@ -48,7 +48,7 @@ public class Registro {
 			t1 = t1 + t.tempActual;
 			t2 = t2 + t.tempTarget;
 			h = h + t.humActual;
-			if (caldera !=0)
+			if (t.estadoCaldera !=0)
 				caldera = t.estadoCaldera;
 		}
 		t1 = t1/temp.length;

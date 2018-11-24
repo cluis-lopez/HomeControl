@@ -1,9 +1,9 @@
 import Adafruit_DHT
 import time
+import sys
 
-def Temp():
+def Temp(pin):
     sensor = Adafruit_DHT.DHT11
-    pin = 22
 
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
@@ -17,9 +17,10 @@ if __name__ == '__main__':
     #t, h =Temp()
     #print "Temperature", t, "Humidity:", h, "%"
     # print('Temp={0:0.1f}*C  Humidity={1:0.1f}%'.format(t,h))
+    pin = sys.argv[1]
     tt = hh = 0
     for i in range(3):
-        t , h = Temp()
+        t , h = Temp(pin)
         tt = tt +t
         hh = hh + h
         time.sleep (1)

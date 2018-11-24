@@ -87,29 +87,24 @@ th, td {
 		<h1>Par&aacute;metros del Sistema</h1>
 		<div class="modeOp">
 			<h3>Modo de Operaci&oacute;n</h3>
-			<form action="">
 				<input type="radio" name="modeOp" value="0">OFF<br>
 				<input type="radio" name="modeOp" value="1">Manual<br>
 				<input type="radio" name="modeOp" value="2">Programa<br><br>
-				<input type="submit" id="modeOp">
-			</form>
 		</div>
 		<br>
 		<div class="modeOp">
 		<h3>Temperatura Objetivo</h3>
-		<form action="">
 			<div class="contslider"><input type="range" min="10" max="30" value="20" step="0.5" class="slider" id="slider"></div>
 			<p>Temperatura: <span id="slider-value"></span></p>
 			<br><br>
-			<input type="submit" id="temp">
-		</form>
+		</div>
+		<br>
+		<div class="modeOp">
+			<input type="button" id="button1" value="Submit">
 		</div>
 </div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
-			var tempClient = 21;
-			var modeClient = 0;
 			
 			$.get("ServerTest", function(data, status) {
 				$("#estado").text(data.estado);
@@ -119,10 +114,13 @@ th, td {
 				switch (data.modeOp) {
 				case 0:
 					modo = "OFF";
+					break;
 				case 1:
 					modo = "MANUAL";
+					break;
 				case 2:
 					modo = "PROGRAMADO";
+					break;
 				}
 				$("#modeOp").text(modo);
 				$("#tempTarget").text(data.tempTarget);
@@ -131,28 +129,26 @@ th, td {
 			 var slider = document.getElementById("slider");
 			 var output = document.getElementById("slider-value");
 			 output.innerHTML = slider.value; // Display the default slider value
+			 tempClient = output.innerHTML; // Make the cselected value te desired temeperature
 
 			 // Update the current slider value (each time you drag the slider handle)
 			 slider.oninput = function() {
 			     output.innerHTML = this.value;
 			 }
 			 
-			 $("#modeOp").click(function(){
-				postea ($('input:radio[name="modeOp"]:checked').val()); 
+			 $("#button1").click(function(){
+				postea ($('input:radio[name="modeOp"]:checked').val(), output.innerHTML); 
 			 });
 			 
-			 function postea(tempClient, modeClient){
-				 $.ajax({
-						url: "/ServerTest",
-						type: "POST",
-						data: {tc: tempClient, mc: modeClient},
-						dataType: "json",
-						success: function (data,status,xhr){
-							if(data != "OK") { // Values sent
-								alert("Data: " + data + "\nStatus: " + status);
-							}
-						}
-					});
+			 function postea(modeClient, tempClient){
+				 $.post("ServerTest",
+						    {
+					 			clientMode: modeClient,
+					 			clientTemp:tempClient
+						    },
+						    function(data, status){
+						        console.log("Data: " + data + "\nStatus: " + status);
+						    });
 			 }
 });
 	</script>
