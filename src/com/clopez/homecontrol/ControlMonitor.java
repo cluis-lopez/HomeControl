@@ -13,17 +13,18 @@ public class ControlMonitor {
 
 	public static void main(String[] args) {
 		
+		String path = "";
 		InputStream in = null;
 		try {
-			in = new FileInputStream("WebContent/WEB-INF/Properties");
+			in = new FileInputStream(path+"WEB-INF/Properties");
 		} catch (FileNotFoundException e) {
 			System.err.println("No puedo abrir el fichero de propiedades");
 			e.printStackTrace();
 		}
 		variablesExternas v = new variablesExternas(in); // Fichero con variables externas del programa (IP Adresses, etc.)
 		
-		Globals globals = new Globals("WEB-INF/GLOBALS"); // Fichero que serializa el estado de la aplicación
-		Registro reg = new Registro("WEB-INF/Historico.log", Integer.parseInt(v.get("numIntervalos"))); // Fichero historico
+		Globals globals = new Globals(path+"WEB-INF/GLOBALS"); // Fichero que serializa el estado de la aplicación
+		Registro reg = new Registro(path+"WEB-INF/Historico.log", Integer.parseInt(v.get("numIntervalos"))); // Fichero historico
 		
 		int estado;
 		float[] tempHum = new float[2];;
@@ -34,7 +35,7 @@ public class ControlMonitor {
 		while (true) { //NOSONAR
 			/* Control starts here */
 			estado = Caldera.Estado(calderaIP);
-			tempHum = SensorPythonWrapper.sensor("WEB-INF/Python", v.get("SensorPIN"));
+			tempHum = SensorPythonWrapper.sensor(path+"WEB-INF/Python", v.get("SensorPIN"));
 			currentTemp = tempHum[0]; //La temperatura actual
 			currentHum = tempHum[1]; // La humedad actual
 			

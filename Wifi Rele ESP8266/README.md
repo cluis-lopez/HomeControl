@@ -2,7 +2,7 @@
 
 To control the boiler we need a wifi actuator to manage two relays, one for the boiler itself, another one for a companion water pump.
 
-To do this we need a ESP8266 Dual WiFi Relay Module made by [lctech](www.lctech.cc). Do not follow that link because although they have an english version of their website there're no info at all.
+To do this we use a ESP8266 Dual WiFi Relay Module made by [lctech](http://www.lctech.cc). Do not follow that link because although they have an english version of their website there're no info at all.
 
 Fortunately, the board is based in the well known ESP8266 SoC that you may program using the Arduino IDE.
 
