@@ -17,14 +17,16 @@ public class SensorPythonWrapper {
 			String ret = in.readLine();
 			in.close();
 			System.out.println("Salida del python: " + ret);
-			tempHum[0] = Float.valueOf((ret.substring(0, ret.indexOf(':'))));
-			tempHum[1] = Float.valueOf((ret.substring(ret.indexOf(':') + 1)));
 
 			String line = "";
 			while ((line = err.readLine()) != null) {
 				System.out.println("[Stderr] " + line);
 			}
 			err.close();
+			
+			tempHum[0] = Float.valueOf((ret.substring(0, ret.indexOf(':'))));
+			tempHum[1] = Float.valueOf((ret.substring(ret.indexOf(':') + 1)));
+			
 		} catch (IOException e) {
 			System.err.println("Error al lanzar el subproceso Python");
 			e.printStackTrace();

@@ -24,17 +24,16 @@ public class ControlMonitor {
 		
 		Globals globals = new Globals("WEB-INF/GLOBALS"); // Fichero que serializa el estado de la aplicación
 		Registro reg = new Registro("WEB-INF/Historico.log", Integer.parseInt(v.get("numIntervalos"))); // Fichero historico
-		//DHT11 sensor = new DHT11();
 		
 		int estado;
 		float[] tempHum = new float[2];;
 		float currentTemp, currentHum;
 		float tempTarget=9999;
-		String CalderaIP = v.get("CalderaIP");
+		String calderaIP = v.get("CalderaIP");
 		
-		while (true) {
+		while (true) { //NOSONAR
 			/* Control starts here */
-			estado = Caldera.Estado(CalderaIP);
+			estado = Caldera.Estado(calderaIP);
 			tempHum = SensorPythonWrapper.sensor("WEB-INF/Python", v.get("SensorPIN"));
 			currentTemp = tempHum[0]; //La temperatura actual
 			currentHum = tempHum[1]; // La humedad actual
@@ -47,14 +46,14 @@ public class ControlMonitor {
 				
 				if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
 					if (estado == 0) // Si la caldera esta apagada, la encendemos
-						Caldera.ActuaCaldera(CalderaIP, "on");
+						Caldera.ActuaCaldera(calderaIP, "on");
 				} else { // La tempratura medida es igual o mayor que la deseada
 					if (estado == 1) // La caldera está encendida
-						Caldera.ActuaCaldera(CalderaIP, "off"); // Se apaga la caldera	
+						Caldera.ActuaCaldera(calderaIP, "off"); // Se apaga la caldera	
 				}
 			} else { // El modo es apagado, comprobamos que la caldera esté apagada
 				if (estado != 0) // La caldera no está apagada
-					Caldera.ActuaCaldera(CalderaIP, "off");
+					Caldera.ActuaCaldera(calderaIP, "off");
 			}
 				
 			

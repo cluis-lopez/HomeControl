@@ -36,7 +36,7 @@ public class Globals {
 				gv = gson.fromJson(new String(b), new TypeToken<GlobalVars>() {}.getType());
 			} catch (FileNotFoundException e) {
 				// Si no existe el fichero es la primera vez que arranca el programa o hay un error catastrofico
-				System.out.println("No existe el fichero");
+				System.out.println("No existe el fichero GLOBALS");
 			}
 			catch (IOException e) {
 				System.err.println("Error de entrada salida");
