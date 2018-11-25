@@ -4,11 +4,14 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class variablesExternas {
 	Properties props;
 
-	public variablesExternas(InputStream in) {
+	public variablesExternas(InputStream in, Logger log) {
 		props = new Properties();
 		BufferedInputStream fd;
 
@@ -17,7 +20,8 @@ public class variablesExternas {
 		try {
 			props.load(fd);
 		} catch (IOException e) {
-			System.err.println("No puedo acceder al fichero de propiedades");
+			log.log(Level.SEVERE, "Error de entrada/salida al cargar el fichero de Propiedades");
+			log.log(Level.SEVERE, e.toString(), e);
 			return;
 		}
 	}

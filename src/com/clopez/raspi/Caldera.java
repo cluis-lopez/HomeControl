@@ -9,7 +9,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.clopez.homecontrol.ControlMonitor;
 import com.clopez.homecontrol.variablesExternas;
 
 public class Caldera {
@@ -18,7 +21,7 @@ public class Caldera {
 	 * @param calderaIP IP address of the relay controller
 	 * @return 0 if both relays are OFF, 1 if both relays are ON, -1 if the controller is unreachable, 2 if there's a conflict (ie. boiler ON and pump OFF)
 	 */
-	public static int Estado(String calderaIP) {
+	public static int Estado(String calderaIP, Logger log) {
 		try {
 			URL url = new URL("http://"+calderaIP);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -33,9 +36,7 @@ public class Caldera {
 			// esto es muy cutre y habría que cambiar el servidor web en el ESP8266 para hacer algo más simple
 			int i = content.indexOf("(Caldera)");
 			int j = content.indexOf("(Bomba)");
-			//Debug below
-			//System.out.println("Caldera  " + content.substring(i+18, i+20));
-			//System.out.println("Bomba  " + content.substring(j+16, j+18));
+
 			if (i != -1 && j != -1) {
 				if (content.substring(i+18, i+20).equals("ON") && content.substring(j+16, j+18).equals("ON"))
 					return 1;
@@ -46,23 +47,25 @@ public class Caldera {
 			}
 			in.close();
 		} catch (IOException e){
-			System.err.println("No puedo conectar con los reles de la caldera");
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Imposible conectarse a la caldera");
+			log.log( Level.SEVERE, e.toString(), e );
 			return -1;
 		}
 		return -1;
 	}
 
-	public static int[] ActuaCaldera (String calderaIP, String estado) {
+	public static int[] ActuaCaldera (String calderaIP, String estado, Logger log) {
 		int[] result = {0, 0};
 		
+		log.log(Level.INFO, "Actuando sobre la caldera. Vamos a {0}", (estado =="on" ? "encender" : "apagar"));
 		try {
 			URL url = new URL("http://"+calderaIP+"/1/"+estado);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			result[0] =  con.getResponseCode();
 		} catch (IOException e){
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Imposible conectarse a la caldera");
+			log.log( Level.SEVERE, e.toString(), e );
 		}
 		
 		try {
@@ -71,13 +74,14 @@ public class Caldera {
 			con.setRequestMethod("GET");
 			result[1] =  con.getResponseCode();
 		} catch (IOException e){
-			System.err.println("No puedo conectar con los reles de la caldera");
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Imposible conectarse a la caldera");
+			log.log( Level.SEVERE, e.toString(), e );
 		}
 		return result;
 	}
 	
 	public static void main (String[] args) { // For debugging purposes
+		Logger log = Logger.getLogger(ControlMonitor.class.getName());
 		InputStream in = null;
 		try {
 			in = new FileInputStream("WebContent/WEB-INF/Properties");
@@ -85,8 +89,8 @@ public class Caldera {
 			System.err.println("No puedo abrir el fichero de propiedades");
 			e.printStackTrace();
 		}
-		variablesExternas v = new variablesExternas(in);
-		int est = Estado(v.get("CalderaIP"));
+		variablesExternas v = new variablesExternas(in, log);
+		int est = Estado(v.get("CalderaIP"), log);
 		String estado = "";
 		switch (est) {
 		case 0:
@@ -112,7 +116,7 @@ public class Caldera {
 		if (est == 1)
 			accion = "off";
 			
-		ActuaCaldera(v.get("CalderaIP"), accion);
+		ActuaCaldera(v.get("CalderaIP"), accion, log);
 		sc.close();
 	}
 }

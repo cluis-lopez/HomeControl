@@ -3,8 +3,8 @@ package com.clopez.homecontrol;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
-import javax.servlet.ServletContext;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.clopez.homecontrol.GlobalVars.ModeOp;
 import com.google.gson.Gson;
@@ -14,7 +14,7 @@ public class Globals {
 		
 		private GlobalVars gv;
 		private String filename;
-		private String path;
+		private Logger log;
 		
 		public Globals(float tempDefecto) {
 			gv = new GlobalVars(tempDefecto);
@@ -23,8 +23,9 @@ public class Globals {
 		/**
 		 * @param filename The file where the object is serialized and stored
 		 */
-		public Globals(String filename) {
+		public Globals(String filename, Logger log) {
 			this.filename = filename;
+			this.log = log;
 			RandomAccessFile fd;
 
 			try {
@@ -36,11 +37,12 @@ public class Globals {
 				gv = gson.fromJson(new String(b), new TypeToken<GlobalVars>() {}.getType());
 			} catch (FileNotFoundException e) {
 				// Si no existe el fichero es la primera vez que arranca el programa o hay un error catastrofico
-				System.out.println("No existe el fichero GLOBALS");
+				log.log(Level.SEVERE, "No se puede abrir el fichero GLOBALS");
+				log.log(Level.SEVERE, e.toString(), e);
 			}
 			catch (IOException e) {
-				System.err.println("Error de entrada salida");
-				e.printStackTrace();
+				log.log(Level.SEVERE, "Error de entrada/salida al abrir el fichero GLBALS");
+				log.log(Level.SEVERE, e.toString(), e);
 			}
 		}
 		
@@ -55,8 +57,8 @@ public class Globals {
 				fd.writeBytes(json);
 				fd.close();
 			} catch (IOException e) {
-				System.err.println("No se pueden volcar los datos en el fichero");
-				e.printStackTrace();
+				log.log(Level.SEVERE, "Error de entrada/salida al escribir en el fichero GLBALS");
+				log.log(Level.SEVERE, e.toString(), e);
 			}
 		}
 		

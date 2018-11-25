@@ -7,7 +7,7 @@ public class Calendario {
 	private float [][][] dias;
 	
 	/**
-	 * @param Double The default temperature to fill up the calendar
+	 * @param float The default temperature to fill up the calendar
 	 */
 	public Calendario(float tempDefecto) {
 		dias = new float [7][24][2];

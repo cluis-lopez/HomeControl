@@ -3,6 +3,7 @@ package com.clopez.homeWebApp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +30,6 @@ public class ServerTest extends HttpServlet {
      */
     public ServerTest() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -37,14 +37,16 @@ public class ServerTest extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+		Logger log = Logger.getLogger(ServerTest.class.getName()); 
+		
 		// Imprime el estado
 		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
-		variablesExternas v = new variablesExternas(in);
+		variablesExternas v = new variablesExternas(in, log);
 		String path = getServletContext().getRealPath("/");
-		Globals g = new Globals(path+"/WEB-INF/GLOBALS");
+		Globals g = new Globals(path+"/WEB-INF/GLOBALS", log);
 		
-		int estado = Caldera.Estado(v.get("CalderaIP"));
-		float[] s = SensorPythonWrapper.sensor(path, v.get("SensorPIN"));
+		int estado = Caldera.Estado(v.get("CalderaIP"), log);
+		float[] s = SensorPythonWrapper.sensor(path, v.get("SensorPIN"), log);
 		float currentTemp = s[0];
 		float currentHum = s[1];
 
@@ -94,10 +96,11 @@ public class ServerTest extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Logger log = Logger.getLogger(ServerTest.class.getName());
 		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
-		variablesExternas v = new variablesExternas(in);
+		variablesExternas v = new variablesExternas(in, log);
 		String path = getServletContext().getRealPath("/");
-		Globals g = new Globals(path+"WEB-INF/GLOBALS");
+		Globals g = new Globals(path+"WEB-INF/GLOBALS", log);
 		
 		float tempManual = Float.parseFloat(req.getParameter("clientTemp"));
 		int modeOp = Integer.parseInt(req.getParameter("clientMode"));
@@ -122,8 +125,8 @@ public class ServerTest extends HttpServlet {
 			
 			String calderaIP = v.get("CalderaIP");
 			float tempTarget = 0f;
-			float currentTemp = SensorPythonWrapper.sensor(path, v.get("SensorPIN"))[0];
-			int estado = Caldera.Estado(calderaIP);
+			float currentTemp = SensorPythonWrapper.sensor(path, v.get("SensorPIN"), log)[0];
+			int estado = Caldera.Estado(calderaIP, log);
 			
 			if (g.getModeOp() != ModeOp.APAGADO.getValue()) { // El modo es MANUAL o PROGRAMADO
 				if (g.getModeOp() == ModeOp.MANUAL.getValue())
@@ -133,14 +136,14 @@ public class ServerTest extends HttpServlet {
 				
 				if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
 					if (estado == 0) // Si la caldera esta apagada, la encendemos
-						Caldera.ActuaCaldera(calderaIP, "on");
+						Caldera.ActuaCaldera(calderaIP, "on", log);
 				} else { // La tempratura medida es igual o mayor que la deseada
 					if (estado == 1) // La caldera está encendida
-						Caldera.ActuaCaldera(calderaIP, "off"); // Se apaga la caldera	
+						Caldera.ActuaCaldera(calderaIP, "off", log); // Se apaga la caldera	
 				}
 			} else { // El modo es apagado, comprobamos que la caldera esté apagada
 				if (estado != 0) // La caldera no está apagada
-					Caldera.ActuaCaldera(calderaIP, "off");
+					Caldera.ActuaCaldera(calderaIP, "off", log);
 			}
 				
 		}
