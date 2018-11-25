@@ -43,7 +43,7 @@ public class ControlMonitor {
 		variablesExternas v = new variablesExternas(in, log); // Fichero con variables externas del programa (IP Adresses, etc.)
 		
 		Globals globals = new Globals(path+"WEB-INF/GLOBALS", log); // Fichero que serializa el estado de la aplicación
-		Registro reg = new Registro(path+"WEB-INF/Historico.log", Integer.parseInt(v.get("numIntervalos"))); // Fichero historico
+		Registro reg = new Registro(path+"WEB-INF/Historico.log", Integer.parseInt(v.get("numIntervalos")), log); // Fichero historico
 		
 		int estado;
 		float[] tempHum = new float[2];;

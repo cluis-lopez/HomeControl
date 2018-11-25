@@ -5,17 +5,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Registro {
 	
 	LineaRegistro[] lineas;
 	int contador;
 	String fileName;
+	Logger log;
 	
-	public Registro(String filename, int numIntervalos) {
+	public Registro(String filename, int numIntervalos, Logger log) {
 		lineas = new LineaRegistro[numIntervalos];
 		contador = 0;
 		this.fileName = filename;
+		this.log = log;
 	}
 	
 	/**
@@ -67,7 +71,8 @@ public class Registro {
 			fd.flush();
 			fd.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Error de entrada/salida al abrir el fichero de logs Historico");
+			log.log(Level.SEVERE, e.toString(), e);
 		}
 	}
 
