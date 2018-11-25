@@ -3,6 +3,7 @@ package com.clopez.homeWebApp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -105,7 +106,7 @@ public class ServerTest extends HttpServlet {
 		float tempManual = Float.parseFloat(req.getParameter("clientTemp"));
 		int modeOp = Integer.parseInt(req.getParameter("clientMode"));
 		
-		System.out.println("En el post: " + tempManual + ":"+ modeOp);
+		log.log(Level.INFO, "Recibido via HTTP Post "+tempManual+" , "+modeOp);
 		
 		if (g.getTempManual() != tempManual || modeOp != g.getModeOp()) { // Hemos cambiado la temperatura manual o el modo de operaion
 			g.setTempManual(tempManual);

@@ -64,6 +64,8 @@ public class ControlMonitor {
 				if (globals.getModeOp() == ModeOp.PROGRAMADO.getValue())
 					tempTarget = globals.getCalendario().getTempTargetNow();
 				
+				log.log(Level.INFO, "Modo de operacion "+globals.getModeOp()+" , Temperatura ambiente: "+currentTemp+" ,Temperatura Objetivo: "+tempTarget);
+				
 				if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
 					if (estado == 0) // Si la caldera esta apagada, la encendemos
 						Caldera.ActuaCaldera(calderaIP, "on", log);
