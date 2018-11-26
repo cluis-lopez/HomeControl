@@ -4,7 +4,7 @@ CalderaIP=192.168.1.18
 # The GPIO sensor on the Raspberry Pi where the DHT11 temp sensor is connected
 SensorPIN=22
 
-# How often we check the status of teh system (in minutes)
+# How often we check the status of the system (in minutes)
 Intervalo=1
 
 # How many times we check the status until we summarize the average into a record (i.e. Check every 5 minutes, Summary each 6 intervals: one record each 30 minutes)
