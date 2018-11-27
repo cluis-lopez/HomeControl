@@ -46,3 +46,43 @@
   background-color: lightblue;
   color: black;
 }
+
+.main{
+	background-color: white;
+	font-family: helvetica;
+	font-size: 15px;
+	width: 100%;
+	position: absolute;
+	top: 125px;
+	right: 0;
+	z-index: -1;
+}
+
+#refrescando {
+	display: none;
+	position: fixed;
+	top: calc(50% - 100px);
+	left: calc(50% - 100px);
+}
+
+.boxInMain{
+	border: 1px solid black;
+	margin: 10px 10px 10px 10px;
+	padding: 5px 10px;
+	position: float;
+}
+
+#monitorTable{
+	position: relative;
+	left: 0%;
+	width: 100%;
+}
+
+#monitorTable .columna2 {
+	text-align: center;
+}
+
+#monitorTable tr:nth-child(even) {background-color: #e2e2e2;}
+#monitorTable td {
+	border-bottom: 1px solid #555;
+}
