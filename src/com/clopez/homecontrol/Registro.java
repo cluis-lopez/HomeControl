@@ -58,7 +58,7 @@ public class Registro {
 		t1 = t1/temp.length;
 		t2 = t2/temp.length;
 		h = h/temp.length;
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		return dtf.format(LocalDateTime.now()) + " Temp:" + String.format("%.1f", t1) + " Hum:" + String.format("%.2f", h) + " TObjetivo:" + String.format("%.1f", t2) + " Caldera:" + caldera;
 	}
 	

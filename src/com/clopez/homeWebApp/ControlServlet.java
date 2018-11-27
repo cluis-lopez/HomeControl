@@ -23,13 +23,13 @@ import com.google.gson.Gson;
  * Servlet implementation class SeverTest
  */
 @WebServlet("/SeverTest")
-public class ServerTest extends HttpServlet {
+public class ControlServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServerTest() {
+    public ControlServlet() {
         super();
     }
 
@@ -38,7 +38,7 @@ public class ServerTest extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		Logger log = Logger.getLogger(ServerTest.class.getName()); 
+		Logger log = Logger.getLogger(ControlServlet.class.getName()); 
 		
 		// Imprime el estado
 		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
@@ -97,7 +97,7 @@ public class ServerTest extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Logger log = Logger.getLogger(ServerTest.class.getName());
+		Logger log = Logger.getLogger(ControlServlet.class.getName());
 		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
 		variablesExternas v = new variablesExternas(in, log);
 		String path = getServletContext().getRealPath("/");

@@ -14,8 +14,8 @@ public class TestHistorico2 {
 	public static void main(String[] args) {
 		Historico h = new Historico("Historico.log", log);
 		List<String> lineas = new ArrayList<String>();
-		LocalDateTime start = LocalDateTime.parse("2018-11-27 15:31:15", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		LocalDateTime end = LocalDateTime.parse("2018-11-27 15:31:34", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		LocalDateTime start = LocalDateTime.parse("2018-11-27 19:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		LocalDateTime end = LocalDateTime.parse("2018-11-27 19:02:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		lineas = h.leeRangoLineas(start, end);
 		
 		for (int i=0; i<lineas.size(); i++) {

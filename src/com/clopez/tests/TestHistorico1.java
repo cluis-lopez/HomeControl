@@ -14,7 +14,7 @@ public class TestHistorico1 {
 		List<String> lineas = new ArrayList<String>();
 		
 		lineas = h.leeLastLineas(5);
-		
+		System.out.println("Num. lineas: "+lineas.size());
 		for (int i=0; i<lineas.size(); i++) {
 			System.out.println(lineas.get(i));
 		}

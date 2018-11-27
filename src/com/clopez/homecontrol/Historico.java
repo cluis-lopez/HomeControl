@@ -27,23 +27,20 @@ public class Historico {
 	    try {
 	        fd = new RandomAccessFile( filename, "r" );
 	        long fileLength = fd.length() - 1;
-	        StringBuilder sb = new StringBuilder();
 	        int line = 0;
 	        long p = fileLength;
 	        long tp = p;
 	        
 			while (line <= numlines) {
+				StringBuilder sb = new StringBuilder();
 				for (tp = p; tp != -1; tp--) {
 					fd.seek(tp);
 					int rbyte = fd.readByte();
 
-					if (rbyte == 0xA && tp < fileLength) {
+					if (rbyte == 0xA) {
 							line = line + 1;
 							lineas.add(sb.reverse().toString());
-							break;
-					} else if (rbyte == 0xD && tp < fileLength-1) {
-							line = line + 1;
-							lineas.add(sb.reverse().toString());
+							p = tp-2;
 							break;
 					}
 					sb.append((char) rbyte);
@@ -55,6 +52,7 @@ public class Historico {
 			log.log(Level.SEVERE, "Error de entrada/salida al abrir el fichero de logs Historico");
 			log.log(Level.SEVERE, e.toString(), e);
 	    }
+	    lineas.remove(0);
 		return lineas;
 	}
 	
@@ -66,7 +64,7 @@ public class Historico {
 			while((temp = br.readLine()) != null) {
 				String tokens[] = temp.split(" ");
 				LocalDateTime dtlinea = LocalDateTime.parse(tokens[0]+" "+tokens[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-				if ( dtlinea.isAfter(start) && dtlinea.isBefore(end) ) 
+				if ( dtlinea.isAfter(start) && dtlinea.isBefore(end) )
 					lineas.add(temp);
 			}
 			br.close();
