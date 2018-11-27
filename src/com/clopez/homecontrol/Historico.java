@@ -1,19 +1,18 @@
 package com.clopez.homecontrol;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Historico {
 
-	LineaRegistro[] lineas;
 	String filename;
 	Logger log;
 	
@@ -22,8 +21,8 @@ public class Historico {
 		this.log = log;
 	}
 	
-	public ArrayList<String> leeLastLineas(int numlines) {
-		ArrayList<String> lineas = new ArrayList<String>();
+	public List<String> leeLastLineas(int numlines) {
+		List<String> lineas = new ArrayList<String>();
 		RandomAccessFile fd = null;
 	    try {
 	        fd = new RandomAccessFile( filename, "r" );
@@ -38,18 +37,14 @@ public class Historico {
 					fd.seek(tp);
 					int rbyte = fd.readByte();
 
-					if (rbyte == 0xA) {
-						if (tp < fileLength) {
+					if (rbyte == 0xA && tp < fileLength) {
 							line = line + 1;
 							lineas.add(sb.reverse().toString());
 							break;
-						}
-					} else if (rbyte == 0xD) {
-						if (tp < fileLength - 1) {
+					} else if (rbyte == 0xD && tp < fileLength-1) {
 							line = line + 1;
 							lineas.add(sb.reverse().toString());
 							break;
-						}
 					}
 					sb.append((char) rbyte);
 				}
@@ -63,14 +58,14 @@ public class Historico {
 		return lineas;
 	}
 	
-	public ArrayList<String> leeRangoLineas(LocalDateTime start, LocalDateTime end) {
-		ArrayList<String> lineas = new ArrayList<String>();
+	public List<String> leeRangoLineas(LocalDateTime start, LocalDateTime end) {
+		List<String> lineas = new ArrayList<String>();
 		String temp;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filename));
 			while((temp = br.readLine()) != null) {
 				String tokens[] = temp.split(" ");
-				LocalDateTime dtlinea = LocalDateTime.parse(tokens[0]+" "+tokens[1], DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss"));
+				LocalDateTime dtlinea = LocalDateTime.parse(tokens[0]+" "+tokens[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 				if ( dtlinea.isAfter(start) && dtlinea.isBefore(end) ) 
 					lineas.add(temp);
 			}
