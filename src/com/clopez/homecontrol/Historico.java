@@ -30,26 +30,30 @@ public class Historico {
 	        long fileLength = fd.length() - 1;
 	        StringBuilder sb = new StringBuilder();
 	        int line = 0;
+	        long p = fileLength;
+	        long tp = p;
 	        
-	        for (long punt = fileLength; punt != -1; punt --) {
-	        	fd.seek(punt);
-	        	int rbyte = fd.readByte();
-	        	
-	             if( rbyte == 0xA ) {
-	                 if (punt < fileLength) {
-	                     line = line + 1;
-	                 }
-	             } else if( rbyte == 0xD ) {
-	                 if (punt < fileLength-1) {
-	                     line = line + 1;
-	                 }
-	             }
-	             if (line >= numlines) {
-	                 break;
-	             }
-	             sb.append((char) rbyte);
-	             sb.
-	        }
+			while (line <= numlines) {
+				for (tp = p; tp != -1; tp--) {
+					fd.seek(tp);
+					int rbyte = fd.readByte();
+
+					if (rbyte == 0xA) {
+						if (tp < fileLength) {
+							line = line + 1;
+							lineas.add(sb.reverse().toString());
+							break;
+						}
+					} else if (rbyte == 0xD) {
+						if (tp < fileLength - 1) {
+							line = line + 1;
+							lineas.add(sb.reverse().toString());
+							break;
+						}
+					}
+					sb.append((char) rbyte);
+				}
+			}
 	        
 	        
 	    } catch (IOException e) {
