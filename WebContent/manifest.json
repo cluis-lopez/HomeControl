@@ -3,12 +3,12 @@
   "name": "Home Control",
   "icons": [
     {
-      "src": "/icons/icons-192.png",
+      "src": "/HomeControl/icons/icons-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/icons/icons-512.png",
+      "src": "/HomeControl/icons/icons-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
@@ -16,6 +16,6 @@
   "start_url": "/HomeControl/index.html",
   "background_color": "#FFFFFF",
   "display": "standalone",
-  "scope": "/HomeControl/",
+  "scope": "/Home_Control/",
   "theme_color": "#ADD8E6"
 }

@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Small Home Controller App.">
 	<meta name="author" content="Carlos L. Lopez">
-	<link rel="manifest" href="/manifest.json">
+	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 	<link rel="stylesheet" type="text/css" href="icons/css/fontello.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -33,15 +33,41 @@
 	<img src="icons/Loading.gif">
 </div>
 <div class="main" id="monitor">
-	<div class="boxInMain">
-		<table id="monitorTable">
-		<tr><td>Modo</td><td class="columna2" id="modeOp">OFF</td></tr>
-		<tr><td>Temperatura Actual</td><td class="columna2" id="currentTemp">19 ºC</td></tr>
-		<tr><td>Humedad</td><td class="columna2" id="currentHum">45 %</td></tr>
-		<tr><td>Temperatura Objetivo</td><td class="columna2" id="targetTemp">21 ºC</td></tr>
-		<tr><td>Caldera</td><td class="columna2" id="estado">ENCENDIDA</td></tr>
-		</table>
+		<div class="boxInMain">
+			<table id="monitorTable">
+				<tr>
+					<td>Modo</td>
+					<td class="columna2" id="modeOp">OFF</td>
+				</tr>
+				<tr>
+					<td>Temperatura Actual</td>
+					<td class="columna2" id="currentTemp">19 ºC</td>
+				</tr>
+				<tr>
+					<td>Humedad</td>
+					<td class="columna2" id="currentHum">45 %</td>
+				</tr>
+				<tr>
+					<td>Temperatura Objetivo</td>
+					<td class="columna2" id="targetTemp">21 ºC</td>
+				</tr>
+				<tr>
+					<td>Caldera</td>
+					<td class="columna2" id="estado">ENCENDIDA</td>
+				</tr>
+			</table>
+		</div>
+		<div class="scrolling">
+			<div class="card">
+				<h2>Card 1</h2>
+			</div>
+			<div class="card">
+				<h2>Card 2</h2>
+			</div>
+			<div class="card">
+				<h2>Card 3</h2>
+			</div>
+		</div>
 	</div>
-</div>
 </body>
 </html>
