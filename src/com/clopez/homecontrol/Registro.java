@@ -58,8 +58,8 @@ public class Registro {
 		t1 = t1/temp.length;
 		t2 = t2/temp.length;
 		h = h/temp.length;
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd HH-mm-ss");
-		return dtf.format(LocalDateTime.now()) + " : " + String.format("%.1f", t1) + " : " + String.format("%.2f%%", h) + " : " + String.format("%.1f", t2) + " : " + caldera;
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
+		return dtf.format(LocalDateTime.now()) + " " + String.format("%.1f", t1) + " " + String.format("%.2f%%", h) + " " + String.format("%.1f", t2) + " " + caldera;
 	}
 	
 	private void save(String linea) {
