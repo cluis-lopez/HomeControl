@@ -3,7 +3,10 @@
 .topnav {
 	background-color: lightblue;
 	overflow: hidden;
-	position: relative;
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	left: 0px;
 }
 
 #logo {
@@ -17,7 +20,7 @@
   display: none;
 }
 
-.topnav a {
+.topnav p {
   color: black;
   padding: 14px 16px;
   text-decoration: none;
@@ -28,6 +31,7 @@
 }
 
 .topnav a.icon {
+	color: black;
   background: lightblue;
   font-size: 25px;
   display: block;
@@ -36,7 +40,7 @@
   top: 0;
 }
 
-.topnav a:hover {
+.menu:active {
   background-color: grey;
   color: black;
 }
@@ -52,8 +56,8 @@
 	font-family: helvetica;
 	font-size: 15px;
 	width: 100%;
-	position: absolute;
-	top: 125px;
+	position: fixed;
+	top: 105px;
 	right: 0;
 	z-index: -1;
 }
@@ -70,10 +74,6 @@
 	margin: 10px 10px 10px 10px;
 	padding: 5px 10px;
 	position: float;
-}
-
-#monitor{
-	display: block;
 }
 
 #monitorTable{
@@ -93,11 +93,10 @@
 
 .scrolling {
 	background-color: white;
-	width: 100vw; arbitary for demo only
-	height: 500px;
-	white-space: nowrap;
-	overflow-y: hidden;
-	overflow-x: scroll;
+	width: 100vw;
+	/*white-space: nowrap;*/
+	overflow-y: scroll;
+	overflow-x: hidden;
 	-webkit-overflow-scrolling: touch;
 }
 
@@ -107,11 +106,29 @@
 	padding: 0px;
 	width: 100vw;
 	height: 300px;
-	display: inline-block;
+	display: block;
 }
 
-#control{
+#control {
 	display: none;
+	padding: 5px 5px;
+}
+
+#control_box {
+	border: 1px solid black;
+	margin: 10px 10px 10px 10px;
+	padding: 5px 10px;
+	position: float;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+#modeOp_select {
+	font-size: 25px;
+}
+
+#tempManual_select {
+	font-size: 25px;
 }
 
 #program{

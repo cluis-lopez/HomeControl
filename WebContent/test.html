@@ -106,7 +106,7 @@ th, td {
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
-			$.get("ServerTest", function(data, status) {
+			$.get("ControlServlet", function(data, status) {
 				$("#estado").text(data.estado);
 				$("#currentTemp").text(data.currentTemp);
 				$("#currentHum").text(data.currentHum);
@@ -141,7 +141,7 @@ th, td {
 			 });
 			 
 			 function postea(modeClient, tempClient){
-				 $.post("ServerTest",
+				 $.post("ControlServlet",
 						    {
 					 			clientMode: modeClient,
 					 			clientTemp:tempClient
@@ -153,7 +153,7 @@ th, td {
 			 }
 			 
 			 function refresh(){
-				 $.get("ServerTest", function(data, status) {
+				 $.get("ControlServlet", function(data, status) {
 						$("#estado").text(data.estado);
 						$("#currentTemp").text(data.currentTemp);
 						$("#currentHum").text(data.currentHum);

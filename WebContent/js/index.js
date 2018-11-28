@@ -10,7 +10,32 @@
 
 $(document).ready(function() {
 	
-	 monitorRefresh();
+
+	for (i = 10; i < 30; i=i+0.5){
+		$("#tempManual_select").append("<option>"+i+"</option>");
+	};
+	
+	monitorRefresh();
+	 
+	 $("#monitor_menu").click(function(){
+		 $("#myLinks").css("display", "none");
+		 $("#monitor").css("display","block");
+		 $("#control").css("display", "none");
+		 $("#program").css("display","none");
+		 $("#historic").css("display","none");
+		 $("#about").css("display","none");
+	 });
+	 
+	 $("#control_menu").click(function(){
+		 console.log("Pulsado control");
+		 $("#myLinks").css("display", "none");
+		 $("#monitor").css("display","none");
+		 $("#program").css("display","none");
+		 $("#historic").css("display","none");
+		 $("#about").css("display","none");
+		 $("#control").css("display", "block");
+		 monitorRefresh();
+	 });
 	
 	 function monitorRefresh(){
 		 $("#refrescando").css("display", "block");

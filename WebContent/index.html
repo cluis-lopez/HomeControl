@@ -18,14 +18,14 @@
 <body>
 <!-- Top Navigation Menu -->
 <div class="topnav">
-  <p id="logo">Home Monitor</p>
+  <p id="logo">Home Control</p>
   <!-- Navigation links (hidden by default) -->
   <div id="myLinks">
-    <a href="#monitor">Monitor</a>
-    <a href="#control">Control</a>
-    <a href="#program">Programar</a>
-    <a href="#historic">Historico</a>
-    <a href="#about">About</a>
+    <p class="menu" id="monitor_menu">Monitor</p>
+    <p class="menu" id="control_menu">Control</p>
+    <p class="menu" id="program_menu">Programar</p>
+    <p class="menu" id="historic_menu">Historico</p>
+    <p class="menu" id="about_menu">About</p>
   </div>
   <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
   <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -76,6 +76,20 @@
 		</div>
 </div>
 <div class="main" id="control">
+	<div id="control_box">
+	<table style="width: 100%;">
+	<tr>
+		<td>Modo</td><td style="text-align: right;"><select id="modeOp_select"><option>OFF</option><option>MANUAL</option><option>PROGRAMA</option></select></td>
+	</tr>
+	</table>
+	</div>
+	<div id="control_box">
+	<table style="width: 100%">
+	<tr>
+		<td>Temperatura</td><td style="text-align: right;"><select id="tempManual_select"></td>
+	</tr>
+	</table>
+	</div>
 </div>
 <div class="main" id="program">
 </div>
