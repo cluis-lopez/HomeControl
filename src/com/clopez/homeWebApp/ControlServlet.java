@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 /**
  * Servlet implementation class SeverTest
  */
-@WebServlet("/SeverTest")
+@WebServlet("/ControlServlet")
 public class ControlServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

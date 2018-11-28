@@ -72,6 +72,10 @@
 	position: float;
 }
 
+#monitor{
+	display: block;
+}
+
 #monitorTable{
 	position: relative;
 	left: 0%;
@@ -104,4 +108,20 @@
 	width: 100vw;
 	height: 300px;
 	display: inline-block;
+}
+
+#control{
+	display: none;
+}
+
+#program{
+	display: none;
+}
+
+#historic{
+	display: none;
+}
+
+#about{
+	display: none;
 }

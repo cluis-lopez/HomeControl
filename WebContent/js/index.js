@@ -10,9 +10,11 @@
 
 $(document).ready(function() {
 	
+	 monitorRefresh();
+	
 	 function monitorRefresh(){
 		 $("#refrescando").css("display", "block");
-		 $.get("ServerTest", function(data, status) {
+		 $.get("ControlServlet", function(data, status) {
 				$("#estado").text(data.estado);
 				$("#currentTemp").text(data.currentTemp);
 				$("#currentHum").text(data.currentHum);
@@ -30,8 +32,28 @@ $(document).ready(function() {
 				}
 				$("#modeOp").text(modo);
 				$("#tempTarget").text(data.tempTarget);
+				$("#refrescando").css("display", "none");
 			});
+		 
+		 lastChart();
 	 }
+	 
+	 
+	 function lastChart(){
+	 	$.get("HistoryServlet?mode=last", function(responseJson) {
+			chartdata = responseJson;
+			$("#lastchart").html("");
+			chart = Morris.Line({
+		  	  	element: 'lastchart',
+		  	 	data: chartdata,
+		  	  	xkey: 'time',
+		  	  	ykeys: ['currentTemp'],
+		  	  	postUnits: ' ºC',
+		  	  	resize: true,
+		  	  	labels: ['Temperatura']
+		  		});
+		});
+	};
 	 
  });
 	
