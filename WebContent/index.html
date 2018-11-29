@@ -52,7 +52,7 @@
 				</tr>
 				<tr>
 					<td>Temperatura Objetivo</td>
-					<td class="columna2" id="targetTemp">21 ºC</td>
+					<td class="columna2" id="tempTarget">21 ºC</td>
 				</tr>
 				<tr>
 					<td>Caldera</td>
@@ -84,11 +84,15 @@
 	</table>
 	</div>
 	<div id="control_box">
-	<table style="width: 100%">
+	<table style="width: 100%;">
 	<tr>
-		<td>Temperatura</td><td style="text-align: right;"><select id="tempManual_select"></td>
+		<td>Temperatura</td><td style="text-align: right;"><select id="tempTarget_select"></td>
 	</tr>
+	<tr><td colspan="2" style="text-align: center; font-size: 15px; font-weight: normal;padding-top:20px;">Temperatura Objetivo actual <span id="tempTarget2"></span></td></tr>
 	</table>
+	</div>
+	<div id="control_divbutton">
+		<button id="control_button">Activar</button>
 	</div>
 </div>
 <div class="main" id="program">

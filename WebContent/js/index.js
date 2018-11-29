@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 
 	for (i = 10; i < 30; i=i+0.5){
-		$("#tempManual_select").append("<option>"+i+"</option>");
+		$("#tempTarget_select").append("<option>"+i+"</option>");
 	};
 	
 	monitorRefresh();
@@ -24,19 +24,45 @@ $(document).ready(function() {
 		 $("#program").css("display","none");
 		 $("#historic").css("display","none");
 		 $("#about").css("display","none");
+		 monitorRefresh();
 	 });
 	 
 	 $("#control_menu").click(function(){
-		 console.log("Pulsado control");
 		 $("#myLinks").css("display", "none");
 		 $("#monitor").css("display","none");
+		 $("#control").css("display", "block");
 		 $("#program").css("display","none");
 		 $("#historic").css("display","none");
 		 $("#about").css("display","none");
-		 $("#control").css("display", "block");
-		 monitorRefresh();
+		 $("#modeOp_select").val($("#modeOp").text());
+		 $("#tempTarget_select").val($("#tempTarget").text().split(" ")[0]);
+		 if ($("#modeOp").text() == "MANUAL")
+			 $("#tempTarget_select").prop("disabled", false);
+		 else
+			 $("#tempTarget_select").prop("disabled", true);
+	 });
+	 
+	 $("#modeOp_select").change(function(){
+		 if ($("#modeOp_select").val() == "MANUAL")
+			 $("#tempTarget_select").prop("disabled", false);
+		 else
+			 $("#tempTarget_select").prop("disabled", true);
+	 });
+	 
+	 $("#control_button").click(function(){
+		 mapa ={"OFF":0, "MANUAL":1, "PROGRAMA":2};
+		 postea(mapa[$$("#modeOp_select").val()], $("#tempTarget_select").val());
 	 });
 	
+	 $("#about_menu").click(function(){
+		 $("#myLinks").css("display", "none");
+		 $("#monitor").css("display","none");
+		 $("#control").css("display", "none");
+		 $("#program").css("display","none");
+		 $("#historic").css("display","none");
+		 $("#about").css("display","block");
+	 });
+	 
 	 function monitorRefresh(){
 		 $("#refrescando").css("display", "block");
 		 $.get("ControlServlet", function(data, status) {
@@ -52,11 +78,12 @@ $(document).ready(function() {
 					modo = "MANUAL";
 					break;
 				case 2:
-					modo = "PROGRAMADO";
+					modo = "PROGRAMA";
 					break;
 				}
 				$("#modeOp").text(modo);
 				$("#tempTarget").text(data.tempTarget);
+				$("#tempTarget2").text(data.tempTarget+" C");
 				$("#refrescando").css("display", "none");
 			});
 		 
@@ -79,6 +106,18 @@ $(document).ready(function() {
 		  		});
 		});
 	};
+	
+	function postea(modeClient, tempClient){
+	 $.post("ControlServlet",
+			    {
+		 			clientMode: modeClient,
+		 			clientTemp:tempClient
+			    },
+			    function(data, status){
+			        console.log("Data: " + data + "\nStatus: " + status);
+			        refresh();
+			    });
+	}
 	 
  });
 	
