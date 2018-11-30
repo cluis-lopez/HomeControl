@@ -71,26 +71,17 @@ $(document).ready(function() {
 				$("#estado").text(data.estado);
 				$("#currentTemp").text(data.currentTemp);
 				$("#currentHum").text(data.currentHum);
-/*				var modo = "";
-				switch (data.modeOp) {
-				case 0:
-					modo = "OFF";
-					break;
-				case 1:
-					modo = "MANUAL";
-					break;
-				case 2:
-					modo = "PROGRAMA";
-					break;
-				}*/
 				modo = Object.keys(mapaModes)[data.modeOp];
 				$("#modeOp").text(modo);
+				if (data.tempTarget == "9999")
+					data,tempTarget="N.A.";
 				$("#tempTarget").text(data.tempTarget);
 				$("#tempTarget2").text(data.tempTarget+" C");
 				$("#refrescando").css("display", "none");
 			});
 		 
-		 lastChart();
+		 var chart = lastChart();
+		 //chart.resize();
 	 }
 	 
 	 
@@ -104,25 +95,31 @@ $(document).ready(function() {
 		  	  	xkey: 'time',
 		  	  	ykeys: ['currentTemp'],
 		  	  	postUnits: ' ºC',
-		  	  	resize: true,
-		  	  	labels: ['Temperatura']
+		  	  	labels: ['Temperatura'],
+		  	  	parseTime: false,
+		  	  	ymin: 10,
 		  		});
 		});
 	};
 	
 	function postea(modeClient, tempClient){
 	 $("#refrescando").css("display", "block");
+	 $("#control_button").text("Activando")
 	 $.post("ControlServlet",
 			    {
 		 			clientMode: modeClient,
 		 			clientTemp:tempClient
 			    },
 			    function(data, status){
-			        console.log("Data: " + data + "\nStatus: " + status);
+			        if (data == "OK" && status == "success"){
+			        	$("#refrescando").css("display", "none");
+			   	 		$("#control_button").css("background-color","lightskyblue");
+			   	 		$("#control_button").text("Activar")
+			   	 		$("#control_button").prop("disabled", false);
+			        } else {
+			        	alert("Algo ha ido mal al conectarnos con el sistema");
+			        }
 			    });
-	 $("#refrescando").css("display", "none");
-	 $("#control_button").css("background-color","lightskyblue");
-	 $("#control_button").prop("disabled", false);
 	}
 	 
  });

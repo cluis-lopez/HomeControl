@@ -57,7 +57,7 @@ public class HistoryServlet extends HttpServlet {
 			String[] token = s.split(" ");
 			map = new HashMap<String, String>();
 			map.put("date", token[0]);
-			map.put("time", token[1]);
+			map.put("time", (token[1].split(":")[0]+":"+token[1].split(":")[1])); // Quitamos los segundos, que molestan
 			map.put("currentTemp", token[2].split(":")[1]);
 			map.put("currentHum", token[3].split(":")[1]);
 			map.put("targetTemp", token[4].split(":")[1]);
