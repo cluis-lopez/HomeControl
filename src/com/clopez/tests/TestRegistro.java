@@ -11,8 +11,8 @@ public class TestRegistro {
 	private static final Logger log = Logger.getLogger(TestRegistro.class.getName());
 
 	public static void main(String[] args) {
-		Registro reg = new Registro("Historico.log", 5, log);
-		for (int i = 0; i <= 50; i++) { // Añadimos 50 lineas que generarán 10 lineas en el fichero historico
+		Registro reg = new Registro("Historico.log", 3, log);
+		for (int i = 0; i <= 150; i++) { // Generamos 150 lineas que escribiran 50 lineas en el fichero historico
 			Random r = new Random();
 			float r1 = 5 * r.nextFloat();
 			float r2 = 10 * r.nextFloat();

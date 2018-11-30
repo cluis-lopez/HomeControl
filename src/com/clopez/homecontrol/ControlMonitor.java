@@ -27,6 +27,7 @@ public class ControlMonitor {
 			e1.printStackTrace();
 		}  
 		
+		log.setUseParentHandlers(false);
         log.addHandler(fd);
         SimpleFormatter formatter = new SimpleFormatter();  
         fd.setFormatter(formatter); 

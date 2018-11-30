@@ -10,6 +10,7 @@
 
 $(document).ready(function() {
 	
+	var mapaModes = {"OFF":0, "MANUAL":1, "PROGRAMA":2};
 
 	for (i = 10; i < 30; i=i+0.5){
 		$("#tempTarget_select").append("<option>"+i+"</option>");
@@ -50,8 +51,9 @@ $(document).ready(function() {
 	 });
 	 
 	 $("#control_button").click(function(){
-		 mapa ={"OFF":0, "MANUAL":1, "PROGRAMA":2};
-		 postea(mapa[$$("#modeOp_select").val()], $("#tempTarget_select").val());
+		 $("#control_button").css("background-color","red");
+		 $("#control_button").prop("disabled", true);
+		 postea(mapaModes[$("#modeOp_select").val()], $("#tempTarget_select").val());
 	 });
 	
 	 $("#about_menu").click(function(){
@@ -69,7 +71,7 @@ $(document).ready(function() {
 				$("#estado").text(data.estado);
 				$("#currentTemp").text(data.currentTemp);
 				$("#currentHum").text(data.currentHum);
-				var modo = "";
+/*				var modo = "";
 				switch (data.modeOp) {
 				case 0:
 					modo = "OFF";
@@ -80,7 +82,8 @@ $(document).ready(function() {
 				case 2:
 					modo = "PROGRAMA";
 					break;
-				}
+				}*/
+				modo = Object.keys(mapaModes)[data.modeOp];
 				$("#modeOp").text(modo);
 				$("#tempTarget").text(data.tempTarget);
 				$("#tempTarget2").text(data.tempTarget+" C");
@@ -108,6 +111,7 @@ $(document).ready(function() {
 	};
 	
 	function postea(modeClient, tempClient){
+	 $("#refrescando").css("display", "block");
 	 $.post("ControlServlet",
 			    {
 		 			clientMode: modeClient,
@@ -115,8 +119,10 @@ $(document).ready(function() {
 			    },
 			    function(data, status){
 			        console.log("Data: " + data + "\nStatus: " + status);
-			        refresh();
 			    });
+	 $("#refrescando").css("display", "none");
+	 $("#control_button").css("background-color","lightskyblue");
+	 $("#control_button").prop("disabled", false);
 	}
 	 
  });

@@ -16,7 +16,7 @@ The control system is a simple thermostat application with logging capabilities 
 
 - The Java webapp, running over Tomcat also in the Raspberry, provides the user interface allowing the user to set the operational mode, the goal temperature (if MANUAL) or to program the weekly calendar when in PROGRAMMED mode. The webapp, permits also to retrieve and draw charts of historical data
 
-The above system is reachable inside the home private network (192.168.1.255) without any special authorization as you need to have your home wifi credentials to gain access. 
+The above system is reachable inside the home private network (192.168.1.255) without any special authorization as you need the home wifi credentials to gain access. 
 
 For Internet access and control we use a gateway based on Pusher (cloud based web socket services) and an additional webapp hosted at Google App Engine:
 

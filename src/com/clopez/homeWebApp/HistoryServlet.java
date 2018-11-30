@@ -44,11 +44,11 @@ public class HistoryServlet extends HttpServlet {
 		Map<String, String> map;
 		List<Map<String, String>> lista = new ArrayList<Map<String, String>>();
 		
-		if (mode == "last") {
+		if (mode.equals("last")) {
 			lineas = hist.leeLastLineas(48);
 			ret = "OK";
 		} else if (mode == "range") {
-			
+			// To be implemented
 		} else {
 			ret = "NOT OK";
 		}
@@ -58,10 +58,10 @@ public class HistoryServlet extends HttpServlet {
 			map = new HashMap<String, String>();
 			map.put("date", token[0]);
 			map.put("time", token[1]);
-			map.put("currentTemp", token[2]);
-			map.put("currentHum", token[3]);
-			map.put("targetTemp", token[4]);
-			map.put("state", token[5]);
+			map.put("currentTemp", token[2].split(":")[1]);
+			map.put("currentHum", token[3].split(":")[1]);
+			map.put("targetTemp", token[4].split(":")[1]);
+			map.put("state", token[5].split(":")[1]);
 			lista.add(map);
 		}
 		
