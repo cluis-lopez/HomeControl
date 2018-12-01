@@ -40,7 +40,7 @@ public class Historico {
 					if (rbyte == 0xA) {
 							line = line + 1;
 							lineas.add(sb.reverse().toString());
-							p = tp-2;
+							p = tp-1;
 							break;
 					}
 					sb.append((char) rbyte);

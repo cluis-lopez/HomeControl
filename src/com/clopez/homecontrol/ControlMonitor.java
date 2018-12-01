@@ -43,6 +43,9 @@ public class ControlMonitor {
 		}
 		variablesExternas v = new variablesExternas(in, log); // Fichero con variables externas del programa (IP Adresses, etc.)
 		
+		// Ajuste del nivel de logging
+		log.setLevel(Level.parse(v.get("LogLevel")));
+		
 		//Globals globals = new Globals(path+"WEB-INF/GLOBALS", log); // Fichero que serializa el estado de la aplicación
 		Registro reg = new Registro(path+"WEB-INF/Historico.log", Integer.parseInt(v.get("numIntervalos")), log); // Fichero historico
 		
@@ -64,9 +67,9 @@ public class ControlMonitor {
 				if (globals.getModeOp() == ModeOp.MANUAL.getValue())
 					tempTarget = globals.getTempManual();
 				if (globals.getModeOp() == ModeOp.PROGRAMADO.getValue())
-					tempTarget = globals.getCalendario().getTempTargetNow();
+				tempTarget = globals.getCalendario().getTempTargetNow();
 				
-				log.log(Level.INFO, "Modo de operacion "+globals.getModeOp()+" , Temperatura ambiente: "+currentTemp+" ,Temperatura Objetivo: "+tempTarget);
+				log.log(Level.CONFIG, "Modo de operacion "+globals.getModeOp()+" , Temperatura ambiente: "+currentTemp+" ,Temperatura Objetivo: "+tempTarget);
 				
 				if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
 					if (estado == 0) // Si la caldera esta apagada, la encendemos

@@ -74,7 +74,7 @@ $(document).ready(function() {
 				modo = Object.keys(mapaModes)[data.modeOp];
 				$("#modeOp").text(modo);
 				if (data.tempTarget == "9999")
-					data,tempTarget="N.A.";
+					data.tempTarget="N.A.";
 				$("#tempTarget").text(data.tempTarget);
 				$("#tempTarget2").text(data.tempTarget+" C");
 				$("#refrescando").css("display", "none");
@@ -94,10 +94,11 @@ $(document).ready(function() {
 		  	 	data: chartdata,
 		  	  	xkey: 'time',
 		  	  	ykeys: ['currentTemp'],
-		  	  	postUnits: ' ºC',
+		  	  	postUnits: 'C',
 		  	  	labels: ['Temperatura'],
 		  	  	parseTime: false,
 		  	  	ymin: 10,
+		  	  	hideHover: 'always',
 		  		});
 		});
 	};

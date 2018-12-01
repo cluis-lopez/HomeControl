@@ -16,7 +16,7 @@ public class SensorPythonWrapper {
 			BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			String ret = in.readLine();
 			in.close();
-			log.log(Level.INFO, "Resultado de la ejecución Python {0}", ret);
+			log.log(Level.CONFIG, "Resultado de la ejecución Python {0}", ret);
 
 			String line = "";
 			String temp = "";

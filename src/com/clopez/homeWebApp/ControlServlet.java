@@ -45,6 +45,7 @@ public class ControlServlet extends HttpServlet {
 		variablesExternas v = new variablesExternas(in, log);
 		String path = getServletContext().getRealPath("/");
 		Globals g = new Globals(path+"/WEB-INF/GLOBALS", log);
+		log.setLevel(Level.parse(v.get("LogLevel")));
 		
 		int estado = Caldera.Estado(v.get("CalderaIP"), log);
 		float[] s = SensorPythonWrapper.sensor(path, v.get("SensorPIN"), log);
@@ -102,11 +103,12 @@ public class ControlServlet extends HttpServlet {
 		variablesExternas v = new variablesExternas(in, log);
 		String path = getServletContext().getRealPath("/");
 		Globals g = new Globals(path+"WEB-INF/GLOBALS", log);
+		log.setLevel(Level.parse(v.get("LogLevel")));
 		
 		float tempManual = Float.parseFloat(req.getParameter("clientTemp"));
 		int modeOp = Integer.parseInt(req.getParameter("clientMode"));
 		
-		log.log(Level.INFO, "Recibido via HTTP Post "+tempManual+" , "+modeOp);
+		log.log(Level.CONFIG, "Recibido via HTTP Post "+tempManual+" , "+modeOp);
 		
 		if (g.getTempManual() != tempManual || modeOp != g.getModeOp()) { // Hemos cambiado la temperatura manual o el modo de operaion
 			g.setTempManual(tempManual);
