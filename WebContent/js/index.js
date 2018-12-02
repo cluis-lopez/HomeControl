@@ -36,13 +36,16 @@ $(document).ready(function() {
 		 $("#historic").css("display","none");
 		 $("#about").css("display","none");
 		 $("#modeOp_select").val($("#modeOp").text());
-		 $("#tempTarget_select").val($("#tempTarget").text().split(" ")[0]);
+		 if (isNaN$("#tempTarget").text().split(" ")[0]) // True if this is Not a Number
+			 $("#tempTarget_select").val("20");
+		 else
+			 $("#tempTarget_select").val($("#tempTarget").text().split(" ")[0]);
 		 if ($("#modeOp").text() == "MANUAL")
 			 $("#tempTarget_select").prop("disabled", false);
 		 else
 			 $("#tempTarget_select").prop("disabled", true);
 	 });
-	 
+
 	 $("#modeOp_select").change(function(){
 		 if ($("#modeOp_select").val() == "MANUAL")
 			 $("#tempTarget_select").prop("disabled", false);
@@ -75,8 +78,8 @@ $(document).ready(function() {
 				$("#modeOp").text(modo);
 				if (data.tempTarget == "9999")
 					data.tempTarget="N.A.";
-				$("#tempTarget").text(data.tempTarget);
-				$("#tempTarget2").text(data.tempTarget+" C");
+				$("#tempTarget").text(data.tempTarget+"  &degC");
+				$("#tempTarget2").text(data.tempTarget+"  &degC");
 				$("#refrescando").css("display", "none");
 			});
 		 
@@ -94,7 +97,7 @@ $(document).ready(function() {
 		  	 	data: chartdata,
 		  	  	xkey: 'time',
 		  	  	ykeys: ['currentTemp'],
-		  	  	postUnits: 'C',
+		  	  	postUnits: '&degC',
 		  	  	labels: ['Temperatura'],
 		  	  	parseTime: false,
 		  	  	ymin: 10,

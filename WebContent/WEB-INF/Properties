@@ -13,6 +13,6 @@ numIntervalos=3
 #The log level of the whole system: Use either
 # WARNING few messages)
 # INFO some informational messages: recommended
-# CONFIG for debugging purposes only
+# FINE for debugging purposes only
 
 LogLevel=INFO
