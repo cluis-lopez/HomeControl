@@ -6,12 +6,11 @@ $(document).ready(function() {
 		$("#tempTarget_select").append("<option>"+i+"</option>");
 	};
 	
-	$(".icon").click(function toggleMenu(){
+	$("#iconMenu").click(function toggleMenu(){
 		if ($("#myLinks").css("display") == "block")
 			$("#myLinks").css("display", "none");
 		else
 			$("#myLinks").css("display", "block");
-			
 	});
 	
 	monitorRefresh();
@@ -78,15 +77,15 @@ $(document).ready(function() {
 					$("#modeOp").text(modo);
 					if (data.tempTarget == "9999")
 						data.tempTarget="N.A.";
-					$("#tempTarget").text(data.tempTarget+"  &degC");
-					$("#tempTarget2").text(data.tempTarget+"  &degC");
+					$("#tempTarget").text(data.tempTarget+" C");
+					$("#tempTarget2").text(data.tempTarget+" C");
 					$("#refrescando").css("display", "none");
 			    },
 			    error: function (xhr, ajaxOptions, thrownError) {
 			    	$("#refrescando").css("display", "none");
 			        alert("Ha habido un problema al comunicarse con el servidor " + thrownError);
 			    },
-			    timeout: 5000
+			    timeout: 15000
 			});
 		 var chart = lastChart();
 	 }

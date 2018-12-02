@@ -31,7 +31,7 @@
   display: block;
 }
 
-.topnav a.icon {
+#iconMenu {
   color: black;
   background: lightskyblue;
   font-size: 25px;

@@ -18,12 +18,6 @@ if __name__ == '__main__':
     #print "Temperature", t, "Humidity:", h, "%"
     # print('Temp={0:0.1f}*C  Humidity={1:0.1f}%'.format(t,h))
     pin = sys.argv[1]
-    tt = hh = 0
-    for i in range(3):
-        t , h = Temp(pin)
-        tt = tt +t
-        hh = hh + h
-        time.sleep (1)
+    t , h = Temp(pin)
 
-    print ('{0:0.1f}:{1:0.1f}'.format(tt/3,hh/3))
-       
+    print ('{0:0.1f}:{1:0.1f}'.format(t,h))  
