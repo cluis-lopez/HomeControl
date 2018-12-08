@@ -56,6 +56,13 @@ public class Calendario {
 		}
 	}
 	
+	public void copyProgramaDia(int diaorigen, int diadestino) {
+		for (int i=0; i<24; i++) {
+			dias[diadestino][i][0] = dias[diaorigen][i][0];
+			dias[diadestino][i][1] = dias[diaorigen][i][1];
+		}
+	}
+	
 	/**
 	 * @return The temperature programmed for the current day of the week at the current time
 	 */
@@ -68,7 +75,7 @@ public class Calendario {
 	 * @param dt The date and time 
 	 * @return The programmed temperature for that date and time
 	 */
-	public float getTempTargetDate(LocalDateTime dt) {
+	public float getTempTargetDate(LocalDateTime dt) { // Ojo posible bug. If Domingo = 0, diasemana = -1
 		int diasemana = dt.getDayOfWeek().getValue() - 1; //El dia de la semana actual Lunes = 0, Martes = 1, ... Domingo = 6
 		int hora = dt.getHour(); // Hora entre 0 y 23
 		int minuto = dt.getMinute();

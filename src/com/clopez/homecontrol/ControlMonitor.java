@@ -67,7 +67,7 @@ public class ControlMonitor {
 				if (globals.getModeOp() == ModeOp.MANUAL.getValue())
 					tempTarget = globals.getTempManual();
 				if (globals.getModeOp() == ModeOp.PROGRAMADO.getValue())
-				tempTarget = globals.getCalendario().getTempTargetNow();
+					tempTarget = globals.getCalendario().getTempTargetNow();
 				
 				log.log(Level.CONFIG, "Modo de operacion "+globals.getModeOp()+" , Temperatura ambiente: "+currentTemp+" ,Temperatura Objetivo: "+tempTarget);
 				
@@ -91,7 +91,7 @@ public class ControlMonitor {
 			try {
 				Thread.sleep(60 * 1000 * Integer.parseInt(v.get("Intervalo"))); // Convertimos los minutos en milisegundos
 			} catch (InterruptedException e) {
-				log.log(Level.SEVERE, "Se ha interrupido la aplicación en el bucle infinito");
+				log.log(Level.SEVERE, "Se ha interrumpido la aplicación en el bucle infinito");
 				log.log(Level.SEVERE, e.toString(), e);
 				break;
 			}

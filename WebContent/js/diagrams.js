@@ -58,7 +58,7 @@ function pintaChart(canvas){
 	ctx.font = "italic 20px Arial";
 	ctx.fillStyle = "#000000";
 	ctx.textAlign = "center";
-	ctx.fillText("Estado hasta el " + lastDate, canvas.width/2, 20);
+	ctx.fillText("Estado el " + lastDate, canvas.width/2, 20);
 	ctx.moveTo(padx, pady);
 	ctx.lineTo(padx, canvas.height-pady) // Vertical
 	ctx.lineTo(canvas.width-padx,canvas.height-pady); //Horizontal
