@@ -54,12 +54,15 @@ function pintaChart(datos, canvas){
 		times[i] = new Date(datos[i].date + " " + datos[i].time);
 	}
 	
-	var lastDate = times[numPoints-1].getDay() + "-"+meses[times[numPoints-1].getMonth()]+"-"+times[numPoints-1].getFullYear();
+	var lastDate = times[numPoints-1].getDate() + "-"+meses[times[numPoints-1].getMonth()]+"-"+times[numPoints-1].getFullYear();
 	
 	//El diagrama principal
 	var ctx = canvas.getContext("2d");
 	ctx.fillStyle = "#FFFFFF";
 	ctx.fillRect(0,0,canvas.width,canvas.height);
+	
+	ctx.strokeStyle = "#000000";
+	ctx.setLineDash([]);
 	ctx.font = "italic 20px Arial";
 	ctx.fillStyle = "#000000";
 	ctx.textAlign = "center";
@@ -83,6 +86,7 @@ function pintaChart(datos, canvas){
 		ctx.textAlign = "right";
 		ctx.fillText(minTemp + i* ((maxTemp-minTemp)/5) + " \260C", padx - 20, canvas.height-pady - stepUp*i +7);
 		ctx.fillStyle = "#000000";
+		ctx.strokeStyle = "#000000";
 		ctx.lineWidthl = 2;
 		ctx.stroke();
 	}
@@ -95,6 +99,7 @@ function pintaChart(datos, canvas){
 		ctx.font = "10px Arial";
 		ctx.textAlign = "center";
 		ctx.fillStyle = "#000000";
+		ctx.strokeStyle = "#000000";
 		ctx.lineWidth = 2;
 		var label = times[i*parseInt(numPoints/10)].getHours() +":"+times[i*parseInt(numPoints/10)].getMinutes();
 		ctx.fillText(label, padx + i*stepRight, canvas.height-pady+20);

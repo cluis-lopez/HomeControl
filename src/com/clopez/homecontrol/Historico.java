@@ -63,7 +63,7 @@ public class Historico {
 			BufferedReader br = new BufferedReader(new FileReader(filename));
 			while((temp = br.readLine()) != null) {
 				String tokens[] = temp.split(" ");
-				LocalDateTime dtlinea = LocalDateTime.parse(tokens[0]+" "+tokens[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+				LocalDateTime dtlinea = LocalDateTime.parse(tokens[0]+" "+tokens[1], DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
 				if ( dtlinea.isAfter(start) && dtlinea.isBefore(end) )
 					lineas.add(temp);
 			}
