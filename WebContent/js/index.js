@@ -13,6 +13,9 @@ $(document).ready(function() {
 			$("#myLinks").css("display", "block");
 	});
 	
+	$("#cont1").resize(resizeChart($("#cont1"), $("#chart")[0]));
+	$("#cont2").resize(resizePrograma($("#cont2"), $("#programa")[0]));
+	
 	monitorRefresh();
 	 
 	 $("#monitor_menu").click(function(){
@@ -80,6 +83,7 @@ $(document).ready(function() {
 					$("#tempTarget").text(data.tempTarget+" C");
 					$("#tempTarget2").text(data.tempTarget+" C");
 					$("#refrescando").css("display", "none");
+					//Aqui añadir gráfica programa
 			    },
 			    error: function (xhr, ajaxOptions, thrownError) {
 			    	$("#refrescando").css("display", "none");
@@ -87,25 +91,13 @@ $(document).ready(function() {
 			    },
 			    timeout: 15000
 			});
-		 var chart = lastChart();
+		 lastChart();
 	 }
 	 
 	 
 	 function lastChart(){
 	 	$.get("HistoryServlet?mode=last", function(responseJson) {
-			chartdata = responseJson;
-			$("#lastchart").html("");
-			chart = Morris.Line({
-		  	  	element: 'lastchart',
-		  	 	data: chartdata,
-		  	  	xkey: 'time',
-		  	  	ykeys: ['currentTemp'],
-		  	  	postUnits: '&degC',
-		  	  	labels: ['Temperatura'],
-		  	  	parseTime: false,
-		  	  	ymin: 10,
-		  	  	hideHover: 'always',
-		  		});
+			pintaChart(responseJson, $("#chart")[0]);
 		});
 	};
 	
