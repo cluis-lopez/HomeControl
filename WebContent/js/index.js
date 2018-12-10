@@ -78,16 +78,18 @@ $(document).ready(function() {
 					$("#currentHum").text(data.currentHum);
 					modo = Object.keys(mapaModes)[data.modeOp];
 					$("#modeOp").text(modo);
-					if (data.tempTarget == "9999")
-						data.tempTarget="N.A.";
-					$("#tempTarget").text(data.tempTarget+" C");
-					$("#tempTarget2").text(data.tempTarget+" C");
+					if (data.tempTarget == "9999") {
+						$("#tempTarget").text("N.A.");
+						$("#tempTarget2").text("N.A.");
+					} else {
+						$("#tempTarget").text(data.tempTarget+" \260C");
+						$("#tempTarget2").text(data.tempTarget+" \260C");
+					}
 					$("#refrescando").css("display", "none");
-					//Aqui añadir gráfica programa
 			    },
 			    error: function (xhr, ajaxOptions, thrownError) {
 			    	$("#refrescando").css("display", "none");
-			        alert("Ha habido un problema al comunicarse con el servidor " + thrownError);
+			        alert("Ha habido un problema al comunicarse con el servidor\n" + thrownError);
 			    },
 			    timeout: 15000
 			});
@@ -114,7 +116,7 @@ $(document).ready(function() {
 					$("#control_button").css("background-color","lightskyblue");
 					$("#control_button").text("Activar")
 					$("#control_button").prop("disabled", false);
-					alert('Problemas de xonexion. Status:' + XMLHttpRequest.status);
+					alert('Problemas de conexion.\nStatus:' + XMLHttpRequest.status);
 				},
 				success: function(data){
 					if (data == "OK"){
