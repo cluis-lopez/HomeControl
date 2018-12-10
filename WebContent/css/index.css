@@ -174,3 +174,29 @@
 	margin-bottom: 50px;
 	margin-top: 25px;
 }
+
+.insideabout p {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.insideabout img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 150;
+}
+
+.insideabout i {
+	display: block;
+	font-size: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.insideabout a {
+	text-decoration:none;
+}
