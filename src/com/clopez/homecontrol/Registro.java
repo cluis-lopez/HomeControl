@@ -70,7 +70,7 @@ public class Registro {
 			fd.newLine();
 			fd.flush();
 			fd.close();
-			log.log(Level.INFO, "Escrito en Historico.log {0}", linea);
+			log.log(Level.FINE, "Escrito en Historico.log {0}", linea);
 		} catch (IOException e) {
 			log.log(Level.SEVERE, "Error de entrada/salida al abrir el fichero de logs Historico");
 			log.log(Level.SEVERE, e.toString(), e);

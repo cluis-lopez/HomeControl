@@ -162,6 +162,9 @@
 
 #about{
 	display: none;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	overflow-x: hidden;
 }
 
 .insideabout{

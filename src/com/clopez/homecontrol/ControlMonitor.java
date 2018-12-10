@@ -61,6 +61,7 @@ public class ControlMonitor {
 			tempHum = SensorPythonWrapper.sensor(path, v.get("SensorPIN"), log);
 			currentTemp = tempHum[0]; //La temperatura actual
 			currentHum = tempHum[1]; // La humedad actual
+			tempTarget=9999; //Si el modo es APAGADO mantenemos este valor irreal como objetivo
 			Globals globals = new Globals(path+"WEB-INF/GLOBALS", log); // Hay que inicializar en cada paso del bucle
 			
 			if (globals.getModeOp() != ModeOp.APAGADO.getValue()) { // El modo es MANUAL o PROGRAMADO
