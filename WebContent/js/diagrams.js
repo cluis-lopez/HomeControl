@@ -107,18 +107,29 @@ function pintaChart(datos, canvas){
 	}
 	
 	// La gráfica de la temperatura
-	for (var i = 0; i<numPoints-1; i++){
-		ctx.beginPath();
-		ctx.moveTo(timeToPixel(times[i]), tempToPixel(temps[i]));
-		ctx.lineTo(timeToPixel(times[i+1]), tempToPixel(temps[i+1]));
-		ctx.strokeStyle = "#0000FF";
-		ctx.lineWidth = 3;
-		ctx.stroke();
+	ctx.beginPath();
+	ctx.strokeStyle = "#0000FF";
+	ctx.lineWidth = 3;
+	ctx.moveTo(timeToPixel(times[0]), tempToPixel(temps[0]));
+	for (var i = 1; i<numPoints; i++){
+		ctx.lineTo(timeToPixel(times[i]), tempToPixel(temps[i]));
 	}
+	ctx.stroke();
 	
 	// Temperatura Objetivo
-	for (var i = 0; i<numPoints-1; i++){
-		ctx.beginPath();
+	//Comenzamos con el primer punto != de 9999
+	var i;
+	for ( i = 0; i< numPoints; i++)
+		if (targetTemps[i] != 9999)
+			break;
+	ctx.beginPath();
+	ctx.moveTo(timeToPixel(times[i]), tempToPixel(targetTemps[i]));
+	ctx.setLineDash([4, 2]);
+	ctx.lineDashOffset = 0;
+	ctx.strokeStyle = "#FF0000";
+	ctx.lineWidth = 2;
+	
+	for (i; i<numPoints-1; i++){
 		if (targetTemps[i] == 9999)
 			continue;
 		ctx.moveTo(timeToPixel(times[i]), tempToPixel(targetTemps[i]));
@@ -127,21 +138,16 @@ function pintaChart(datos, canvas){
 		else
 			target = targetTemps[i+1];
 		ctx.lineTo(timeToPixel(times[i+1]), tempToPixel(target));
-		ctx.setLineDash([4, 2]);
-		ctx.lineDashOffset = 0;
-		ctx.strokeStyle = "#FF0000";
-		ctx.lineWidth = 2;
-		ctx.stroke();
 	}
+	ctx.stroke();
 	
 	// La gráfica del estado de la caldera
-	for (var i = 0; i<numPoints; i++){
-		if (datos[i].state = "1")
-			var caldera = 1;
-		ctx.beginPath();
-		ctx.moveTo(timeToPixel(times[i]), pady);
-		ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
-		
+	ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+	for (var i = 0; i<numPoints-1; i++){
+		if (datos[i].state = "1"){
+			ctx.moveTo(timeToPixel(times[i]), pady);
+			ctx.fillRect(timeToPixel(times[i]), pady, timeToPixel(times[i+1]), tempToPixel(maxTemp));
+		}
 	}
 	
 	
