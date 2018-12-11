@@ -138,6 +138,10 @@ function pintaChart(datos, canvas){
 	for (var i = 0; i<numPoints; i++){
 		if (datos[i].state = "1")
 			var caldera = 1;
+		ctx.beginPath();
+		ctx.moveTo(timeToPixel(times[i]), pady);
+		ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+		
 	}
 	
 	
