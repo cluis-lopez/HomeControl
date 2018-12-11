@@ -133,11 +133,7 @@ function pintaChart(datos, canvas){
 		if (targetTemps[i] == 9999)
 			continue;
 		ctx.moveTo(timeToPixel(times[i]), tempToPixel(targetTemps[i]));
-		if (targetTemps[i+1] == 9999)
-			target = targetTemps[i];
-		else
-			target = targetTemps[i+1];
-		ctx.lineTo(timeToPixel(times[i+1]), tempToPixel(target));
+		ctx.lineTo(timeToPixel(times[i+1]), tempToPixel(targetTemps[i]));
 	}
 	ctx.stroke();
 	
