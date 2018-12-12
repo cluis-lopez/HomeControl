@@ -47,16 +47,23 @@ public class Registro {
 		float t1 = 0;
 		float t2 = 0;
 		float h = 0;
+		int numTempTarget = 0;
 		int caldera = 0; // Por defecto, asumimos que la caldera esta apagada
 		for (LineaRegistro t: temp) {
 			t1 = t1 + t.tempActual;
-			t2 = t2 + t.tempTarget;
+			if (t.tempTarget != 9999) {
+				t2 = t2 + t.tempTarget;
+				numTempTarget++;
+			}
 			h = h + t.humActual;
 			if (t.estadoCaldera !=0)
 				caldera = t.estadoCaldera;
 		}
 		t1 = t1/temp.length;
-		t2 = t2/temp.length;
+		if (t2 != 0)
+			t2 = t2/numTempTarget;
+		else
+			t2 = 9999f;
 		h = h/temp.length;
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		return dtf.format(LocalDateTime.now()) + " Temp:" + String.format("%.1f", t1) + " Hum:" + String.format("%.2f", h) + " TObjetivo:" + String.format("%.1f", t2) + " Caldera:" + caldera;

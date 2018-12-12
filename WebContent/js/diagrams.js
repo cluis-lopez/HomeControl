@@ -41,12 +41,12 @@ function pintaChart(datos, canvas){
 	var minTemp = 100;
 	
 	for (var i=0; i<numPoints; i++){
-		temps[i] = parseFloat(datos[i].currentTemp);
+		temps[i] = parseFloat(datos[i].currentTemp.replace(',', '.'));
 		if (temps[i] > maxTemp)
 			maxTemp = temps[i];
 		if (temps[i]< minTemp)
 			minTemp = temps[i];
-		targetTemps[i] = parseFloat(datos[i].targetTemp);
+		targetTemps[i] = parseFloat(datos[i].targetTemp.replace(',', '.'));
 		if (targetTemps[i] != 9999 && targetTemps[i] > maxTemp)
 			maxTemp = targetTemps[i];
 		if (targetTemps[i] != 9999 && targetTemps[i] < minTemp)
@@ -92,17 +92,17 @@ function pintaChart(datos, canvas){
 	}
 	
 	// El eje horizontal: ponemos 10 marcas horarias
+	ctx.font = "10px Arial";
+	ctx.textAlign = "center";
+	ctx.fillStyle = "#000000";
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth = 2;
 	var stepRight = (canvas.width - 2 * padx) / 10;
 	for (var i = 0; i<=10; i++){
-		ctx.moveTo(padx + i*stepRight, canvas.height-pady);
-		ctx.lineTo(padx + i*stepRight, canvas.height-pady+10);
-		ctx.font = "10px Arial";
-		ctx.textAlign = "center";
-		ctx.fillStyle = "#000000";
-		ctx.strokeStyle = "#000000";
-		ctx.lineWidth = 2;
 		var label = times[i*parseInt(numPoints/10)].getHours() +":"+times[i*parseInt(numPoints/10)].getMinutes();
-		ctx.fillText(label, padx + i*stepRight, canvas.height-pady+20);
+		ctx.moveTo(timeToPixel(times[i]), canvas.height-pady);
+		ctx.lineTo(timeToPixel(times[i]), canvas.height-pady+10);
+		ctx.fillText(label, timeToPixel(times[i]), canvas.height-pady+20);
 		ctx.stroke();
 	}
 	
@@ -139,10 +139,10 @@ function pintaChart(datos, canvas){
 	
 	// La gráfica del estado de la caldera
 	ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+	step = (canvas.width - 2 * padx)/numPoints;
 	for (var i = 0; i<numPoints-1; i++){
-		if (datos[i].state = "1"){
-			ctx.moveTo(timeToPixel(times[i]), pady);
-			ctx.fillRect(timeToPixel(times[i]), pady, timeToPixel(times[i+1]), tempToPixel(maxTemp));
+		if (datos[i].state == "1"){
+			ctx.fillRect(timeToPixel(times[i]), tempToPixel(maxTemp), step, canvas.heigh - 2 * pady );
 		}
 	}
 	
