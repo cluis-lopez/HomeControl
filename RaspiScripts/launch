@@ -1,0 +1,15 @@
+export CLASSPATH=/var/lib/tomcat8/webapps/HomeControl/WEB-INF/classes:/var/lib/tomcat8/webapps/HomeControl/WEB-INF/lib/*
+
+webapp=/var/lib/tomcat8/webapps/HomeControl
+# Si no existe el fichero Historico.log, lo creamos
+
+if [ ! -f $webapp/WEB-INF/Historico.log ]
+then
+	# El fichero no existe
+	echo "Creando un fichero fake Historico.log de 100 lineas"
+	java com.clopez.homecontrol.fakeHistorico $webapp
+else
+	echo "Ya existe un fichero Historico.log"
+fi
+
+nohup java com.clopez.homecontrol.ControlMonitor $webapp 2>&1 &

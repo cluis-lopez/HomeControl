@@ -30,7 +30,7 @@ public class fakeHistorico {
 		}
 		variablesExternas v = new variablesExternas(in, log);
 		// Los segundos entre cada linea segun el ficero Properties
-		int inter = Integer.parseInt(v.get("Intervalo")) * 60 * 1000;
+		int inter = Integer.parseInt(v.get("Intervalo"));
 		
 		LocalDateTime ts = LocalDateTime.now();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");

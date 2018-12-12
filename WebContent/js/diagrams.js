@@ -79,17 +79,17 @@ function pintaChart(datos, canvas){
 	else
 		minTemp = maxTemp-5;
 	var stepUp = (canvas.height - 2 * pady)/5; //5 valores en el eje Y
+	ctx.font = "12px Arial";
+	ctx.textAlign = "right";
+	ctx.fillStyle = "#000000";
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidthl = 2;
 	for (var i=0; i<=5; i++){
 		ctx.moveTo(padx, canvas.height-pady - stepUp*i);
 		ctx.lineTo(padx-10, canvas.height-pady - stepUp*i);
-		ctx.font = "12px Arial";
-		ctx.textAlign = "right";
 		ctx.fillText(minTemp + i* ((maxTemp-minTemp)/5) + " \260C", padx - 20, canvas.height-pady - stepUp*i +7);
-		ctx.fillStyle = "#000000";
-		ctx.strokeStyle = "#000000";
-		ctx.lineWidthl = 2;
-		ctx.stroke();
 	}
+	ctx.stroke();
 	
 	// El eje horizontal: ponemos 10 marcas horarias
 	ctx.font = "10px Arial";
