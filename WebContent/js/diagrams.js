@@ -91,18 +91,20 @@ function pintaChart(datos, canvas){
 	}
 	ctx.stroke();
 	
-	// El eje horizontal: ponemos 10 marcas horarias
+	// El eje horizontal: ponemos 5 marcas horarias
 	ctx.font = "10px Arial";
 	ctx.textAlign = "center";
 	ctx.fillStyle = "#000000";
 	ctx.strokeStyle = "#000000";
 	ctx.lineWidth = 2;
-	var stepRight = (canvas.width - 2 * padx) / 10;
-	for (var i = 0; i<=10; i++){
-		var label = times[i*parseInt(numPoints/10)].getHours() +":"+times[i*parseInt(numPoints/10)].getMinutes();
+	var stepRight = (canvas.width - 2 * padx) / 5;
+	var step = parseInt(numPoints / 5);
+	for (var i = numPoints - 1; i>=0; i -=step){
+		var hour = (times[i].getHours().toString().length == 1 ? "0"+times[i].getHours() : times[i].getHours())
+		var min = (times[i].getMinutes().toString().length == 1 ? "0"+times[i].getMinutes() : times[i].getMinutes())
 		ctx.moveTo(timeToPixel(times[i]), canvas.height-pady);
 		ctx.lineTo(timeToPixel(times[i]), canvas.height-pady+10);
-		ctx.fillText(label, timeToPixel(times[i]), canvas.height-pady+20);
+		ctx.fillText(hour + ":" + min, timeToPixel(times[i]), canvas.height-pady+20);
 		ctx.stroke();
 	}
 	
@@ -140,9 +142,9 @@ function pintaChart(datos, canvas){
 	// La gráfica del estado de la caldera
 	ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
 	step = (canvas.width - 2 * padx)/numPoints;
-	for (var i = 0; i<numPoints-1; i++){
+	for (var i = 0; i<numPoints; i++){
 		if (datos[i].state == "1"){
-			ctx.fillRect(timeToPixel(times[i]), tempToPixel(maxTemp), step, canvas.heigh - 2 * pady );
+			ctx.fillRect(timeToPixel(times[i]), tempToPixel(maxTemp), step, canvas.height - 2 * pady );
 		}
 	}
 	

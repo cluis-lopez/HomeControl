@@ -30,7 +30,7 @@ public class fakeHistorico {
 		}
 		variablesExternas v = new variablesExternas(in, log);
 		// Los segundos entre cada linea segun el ficero Properties
-		int inter = Integer.parseInt(v.get("Intervalo"));
+		int inter = Integer.parseInt(v.get("Intervalo")) * Integer.parseInt(v.get("numIntervalos"));
 		
 		LocalDateTime ts = LocalDateTime.now();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -39,7 +39,8 @@ public class fakeHistorico {
 		String[] lineas = new String[LINEAS];
 		
 		for (int i = 1; i <= LINEAS; i++) {
-			int h = ts.getHour();
+			LocalDateTime ts2 = ts.minusMinutes(i * (long) inter);
+			int h = ts2.getHour();
 			int modeOp;
 			float tempTarget;
 			int caldera = 0;
@@ -55,9 +56,8 @@ public class fakeHistorico {
 			//reg.add(modeOp, 20f, 45f, tempTarget, estadoCaldera);
 			float temp = 20f;
 			float hum = 45f;
-			String s = dtf.format(ts) + " Temp:" + String.format("%.1f", temp) + " Hum:" + String.format("%.2f", hum) + " TObjetivo:" + String.format("%.1f", tempTarget) + " Caldera:" + caldera;
+			String s = dtf.format(ts2) + " Temp:" + String.format("%.1f", temp) + " Hum:" + String.format("%.2f", hum) + " TObjetivo:" + String.format("%.1f", tempTarget) + " Caldera:" + caldera;
 			lineas[LINEAS-i] = s;
-			ts = ts.minusMinutes(ts.getMinute() - inter);
 
 		}
 		
@@ -66,8 +66,8 @@ public class fakeHistorico {
 		try {
 			f = new FileWriter(path+"WEB-INF/Historico.log", true);
 			BufferedWriter fd = new BufferedWriter(f);
-			for (int i = 0; i<lineas.length; i++) {
-				fd.write(lineas[i]);
+			for (String s: lineas) {
+				fd.write(s);
 				fd.newLine();
 			}
 			fd.flush();
