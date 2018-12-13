@@ -74,8 +74,8 @@ $(document).ready(function() {
 			    url: "ControlServlet",
 			    success: function (data) {
 			    	$("#estado").text(data.estado);
-					$("#currentTemp").text(data.currentTemp);
-					$("#currentHum").text(data.currentHum);
+					$("#currentTemp").text(data.currentTemp + " \260C");
+					$("#currentHum").text(data.currentHum + " %");
 					modo = Object.keys(mapaModes)[data.modeOp];
 					$("#modeOp").text(modo);
 					if (data.tempTarget == "9999") {
