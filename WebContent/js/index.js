@@ -98,7 +98,7 @@ $(document).ready(function() {
 	 
 	 
 	 function lastChart(){
-	 	$.get("HistoryServlet?mode=last", function(responseJson) {
+	 	$.get("HistoryServlet?mode=last&numLines=48", function(responseJson) {
 			pintaChart(responseJson, $("#chart")[0]);
 		});
 	};

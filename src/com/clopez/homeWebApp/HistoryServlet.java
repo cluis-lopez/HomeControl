@@ -39,6 +39,7 @@ public class HistoryServlet extends HttpServlet {
 		Logger log = Logger.getLogger(ControlServlet.class.getName());
 		
 		String mode = req.getParameter("mode");
+		int numLines = Integer.parseInt(req.getParameter("numLines"));
 		String ret ="";
 		Historico hist = new Historico(getServletContext().getRealPath("/")+"/WEB-INF/Historico.log", log);
 		List<String> lineas = new ArrayList<String>();
@@ -46,7 +47,7 @@ public class HistoryServlet extends HttpServlet {
 		List<Map<String, String>> lista = new ArrayList<Map<String, String>>();
 		
 		if (mode.equals("last")) {
-			lineas = hist.leeLastLineas(48);
+			lineas = hist.leeLastLineas(numLines);
 			ret = "OK";
 		} else if (mode == "range") {
 			// To be implemented
