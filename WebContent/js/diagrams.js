@@ -39,6 +39,7 @@ function pintaChart(datos, canvas){
 	
 	var maxTemp = 0;
 	var minTemp = 100;
+	var calderaOnTime = 0;
 	
 	for (var i=0; i<numPoints; i++){
 		temps[i] = parseFloat(datos[i].currentTemp.replace(',', '.'));
@@ -52,6 +53,8 @@ function pintaChart(datos, canvas){
 		if (targetTemps[i] != 9999 && targetTemps[i] < minTemp)
 			minTemp = targetTemps[i];
 		times[i] = new Date(datos[i].date + " " + datos[i].time);
+		if (i > 0 && datos[i].state == "1")
+			calderaOnTime += times[i]-times[i-1];
 	}
 	
 	var lastDate = times[numPoints-1].getDate() + "-"+meses[times[numPoints-1].getMonth()]+"-"+times[numPoints-1].getFullYear();
@@ -63,10 +66,12 @@ function pintaChart(datos, canvas){
 	
 	ctx.strokeStyle = "#000000";
 	ctx.setLineDash([]);
-	ctx.font = "italic 20px Arial";
+	ctx.font = "20px Arial";
 	ctx.fillStyle = "#000000";
 	ctx.textAlign = "center";
-	ctx.fillText("Estado el " + lastDate, canvas.width/2, 20);
+	ctx.font = "15px Arial";
+	ctx.fillText(lastDate, canvas.width/2, 20);
+	ctx.fillText("Caldera arrancada: " + millisToString(calderaOnTime), canvas.width/2, canvas.height);
 	ctx.moveTo(padx, pady);
 	ctx.lineTo(padx, canvas.height-pady) // Vertical
 	ctx.lineTo(canvas.width-padx,canvas.height-pady); //Horizontal
@@ -108,6 +113,30 @@ function pintaChart(datos, canvas){
 		ctx.stroke();
 	}
 	
+	// La gráfica del estado de la caldera
+	ctx.fillStyle = "rgba(242, 159, 16, 0.5)";
+	wstep = (canvas.width - 2 * padx)/numPoints;
+	var state = false;
+	var steps = 0, startAt=0;
+	for (var i = 0; i<numPoints; i++){
+		if (datos[i].state == "1"){
+			if (!state){ //Hemos cambiado de "off" a "on"
+				state = true;
+				startAt = i;
+			}
+			steps++;
+			//Hemos llegao al último y si la caldera esta "on" dibujamos lo que haiga
+			if ( i == numPoints-1)
+				ctx.fillRect(timeToPixel(times[startAt]), tempToPixel(maxTemp), wstep * steps, canvas.height - 2 * pady );
+		} else { //Estado "off"
+			if (state){ //El estado anterior era "on"
+				ctx.fillRect(timeToPixel(times[startAt]), tempToPixel(maxTemp), wstep * steps, canvas.height - 2 * pady );
+			}
+			state = false;
+			steps = 0;
+		}
+	}
+	
 	// La gráfica de la temperatura
 	ctx.beginPath();
 	ctx.strokeStyle = "#0000FF";
@@ -139,15 +168,6 @@ function pintaChart(datos, canvas){
 	}
 	ctx.stroke();
 	
-	// La gráfica del estado de la caldera
-	ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
-	step = (canvas.width - 2 * padx)/numPoints;
-	for (var i = 0; i<numPoints; i++){
-		if (datos[i].state == "1"){
-			ctx.fillRect(timeToPixel(times[i]), tempToPixel(maxTemp), step, canvas.height - 2 * pady );
-		}
-	}
-	
 	
 	function timeToPixel(time){
 		//console.log("time2pix :" + parseInt(padx + (canvas.width - 2 * padx) * ((time.getTime() - times[0].getTime()) / (times[numPoints-1].getTime() - times[0].getTime()))));
@@ -158,6 +178,17 @@ function pintaChart(datos, canvas){
 		//console.log("temp2pix : "+ (pady + ((canvas.height-2*pady) * ((maxTemp - t) / (maxTemp - minTemp)))));
 		return pady + ((canvas.height-2*pady) * ((maxTemp - t) / (maxTemp - minTemp)));
 	}
+	
+	function millisToString(msec){
+		var hours = Math.floor(msec / 1000 / 60 / 60);
+		msec -= hours * 1000 * 60 * 60;
+		var mins = Math.floor(msec / 1000 / 60);
+		if (hours > 0)
+			return hours + " hora"+(hours >1 ? "s" : "")+"  y " + mins + " minutos";
+		else
+			return mins + " minutos";
+	}
+	
 }
 
 function pintaPrograma(data, canvas){
