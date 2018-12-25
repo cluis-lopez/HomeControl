@@ -61,12 +61,12 @@ public class Historico {
 	 * @param last
 	 * @return LocalDateTime array with the first date in the Historic.log file and the last date
 	 */
-	public LocalDateTime[] limits(LocalDateTime first, LocalDateTime last) {
+	public LocalDateTime[] limits() {
 		LocalDateTime[] ret = new LocalDateTime[2];
 		List<String> lineas = leeLastLineas(1);
 		BufferedReader br;
 		
-		if (lineas.size() != 1 || first.isAfter(last) || last.isBefore(first)) {
+		if (lineas.size() != 1) {
 			ret[0] = LocalDateTime.MIN;
 			ret[1] = LocalDateTime.MAX;
 			return ret;

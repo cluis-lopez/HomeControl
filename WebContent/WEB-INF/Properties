@@ -10,8 +10,8 @@ Intervalo=1
 # How many times we check the status until we summarize the average into a record (i.e. Check every 5 minutes, Summary each 6 intervals: one record each 30 minutes)
 numIntervalos=3
 
-#The log level of the whole system: Use either
-# WARNING few messages)
+# The log level of the whole system: Use either
+# WARNING few messages
 # INFO some informational messages: recommended
 # FINE for debugging purposes only
 

@@ -2,6 +2,7 @@ package com.clopez.homeWebApp;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.clopez.homecontrol.GlobalVars.ModeOp;
 import com.clopez.homecontrol.Globals;
+import com.clopez.homecontrol.Historico;
 import com.clopez.homecontrol.variablesExternas;
 import com.clopez.raspi.Caldera;
 import com.clopez.raspi.SensorPythonWrapper;
@@ -40,17 +42,23 @@ public class ControlServlet extends HttpServlet {
 
 		Logger log = Logger.getLogger(ControlServlet.class.getName()); 
 		
-		// Imprime el estado
 		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
 		variablesExternas v = new variablesExternas(in, log);
+		Historico hist = new Historico("Historico.log", log);
 		String path = getServletContext().getRealPath("/");
 		Globals g = new Globals(path+"/WEB-INF/GLOBALS", log);
 		log.setLevel(Level.parse(v.get("LogLevel")));
 		
+		// Lee la temperatura y humedad desde el sensor DHT11
 		int estado = Caldera.Estado(v.get("CalderaIP"), log);
 		float[] s = SensorPythonWrapper.sensor(path, v.get("SensorPIN"), log);
 		float currentTemp = s[0];
 		float currentHum = s[1];
+		
+		/* Para la página de históricos buscamos la primera y última fecha que tenemos en el 
+		fichero de Historicos */
+		
+		LocalDateTime[] limits = hist.limits();
 
 		
 		//float currentTemp = 19.2f; // Debug
@@ -70,6 +78,8 @@ public class ControlServlet extends HttpServlet {
 		map.put("currentHum", currentHum);
 		map.put("tempTarget", tempTarget);
 		map.put("calendario", g.getCalendario());
+		map.put("firstDate", limits[0]);
+		map.put("lastDate", limits[1]);
 		switch (estado) {
 			case 0:
 				map.put("estado", "OFF");
@@ -149,7 +159,7 @@ public class ControlServlet extends HttpServlet {
 					if (currentTemp < tempTarget) {// Hay que encender la caldera si no lo está ya
 						if (estado == 0) // Si la caldera esta apagada, la encendemos
 							Caldera.ActuaCaldera(calderaIP, "on", log);
-					} else { // La tempratura medida es igual o mayor que la deseada
+					} else { // La temperatura medida es igual o mayor que la deseada
 						if (estado == 1) // La caldera está encendida
 							Caldera.ActuaCaldera(calderaIP, "off", log); // Se apaga la caldera	
 					}
@@ -170,7 +180,7 @@ public class ControlServlet extends HttpServlet {
 		resp.flushBuffer();
 	}
 	
-	/* Chek if a string could be converted to number (got from StackOverflow)
+	/* Check if a string could be converted to number (got from StackOverflow)
 	 * 
 	 */
 	public static boolean isNumeric(String s) {  
