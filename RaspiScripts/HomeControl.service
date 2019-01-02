@@ -1,0 +1,14 @@
+[Unit]
+Description=HomeControl Service
+After=network.target
+
+[Service]
+ExecStart=/bin/bash HomeControl
+WorkingDirectory=/root
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
