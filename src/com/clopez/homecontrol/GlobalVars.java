@@ -11,7 +11,7 @@ public class GlobalVars {
 		 public int getValue() {
 		    return value;
 		  }
-		}
+	}
 
 	public int modeOp;
 	public float tempManual;
