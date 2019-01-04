@@ -44,7 +44,7 @@ public class ControlServlet extends HttpServlet {
 		
 		InputStream in = getServletContext().getResourceAsStream("/WEB-INF/Properties");
 		variablesExternas v = new variablesExternas(in, log);
-		Historico hist = new Historico("Historico.log", log);
+		Historico hist = new Historico(getServletContext().getRealPath("/")+"/WEB-INF/Historico.log", log);
 		String path = getServletContext().getRealPath("/");
 		Globals g = new Globals(path+"/WEB-INF/GLOBALS", log);
 		log.setLevel(Level.parse(v.get("LogLevel")));

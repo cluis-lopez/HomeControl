@@ -24,8 +24,9 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
 	public Listener (final String args[]) {
 		apiKey = args.length > 0 ? args[0] : "InvalidKey";
 		channelName = "datosToRaspi";
-		eventName = "'ordenFromWebClient";
+		eventName = "ordenFromWebClient";
 		final PusherOptions options = new PusherOptions().setEncrypted(true);
+		options.setCluster("eu");
         pusher = new Pusher(apiKey, options);
         pusher.connect();
         pusher.subscribe(channelName, this, eventName);
@@ -65,7 +66,10 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
         final Gson gson = new Gson();
         @SuppressWarnings("unchecked")
         final Map<String, String> jsonObject = gson.fromJson(data, Map.class);
-        System.out.println(jsonObject);
+        System.out.println(jsonObject); //Debug
+        if (jsonObject.get("command").equals("GET")) {
+        	
+        }
     }
 
     @Override

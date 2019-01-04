@@ -29,7 +29,7 @@ public class Historico {
 	        long fileLength = fd.length() - 1;
 	        int line = 0;
 	        long p = fileLength;
-	        long tp = p;
+	        long tp;
 	        
 			while (line <= numlines) {
 				StringBuilder sb = new StringBuilder();
@@ -75,12 +75,12 @@ public class Historico {
 			br = new BufferedReader(new FileReader(filename));
 			String firstLinea = br.readLine();
 			br.close();
-			ret[1] = getDateTime(firstLinea);
+			ret[0] = getDateTime(firstLinea); //La fecha+hora de la primera linea
 		} catch (IOException e) {
 			log.log(Level.SEVERE, "Error de entrada/salida al abrir el fichero de logs Historico");
 			log.log(Level.SEVERE, e.toString(), e);
 		}
-		ret[0] = getDateTime(lineas.get(1));
+		ret[1] = getDateTime(lineas.get(0)); //La fecha+hora de la ultima linea
 		return ret;
 	}
 		

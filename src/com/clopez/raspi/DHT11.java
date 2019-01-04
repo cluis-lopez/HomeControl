@@ -1,4 +1,4 @@
-package com.clopez.raspi;
+/*package com.clopez.raspi;
 
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
@@ -48,9 +48,9 @@ public class DHT11 {
 				break;
 			}
 
-			/* ignore first 3 transitions */
+			 ignore first 3 transitions 
 			if (i >= 4 && i % 2 == 0) {
-				/* shove each bit into the storage bytes */
+				 shove each bit into the storage bytes 
 				dht11_dat[j / 8] <<= 1;
 				if (counter > 16) {
 					dht11_dat[j / 8] |= 1;
@@ -105,3 +105,4 @@ public class DHT11 {
 
 	}
 }
+*/
