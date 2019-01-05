@@ -1,6 +1,17 @@
 package com.clopez.gateway;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.pusher.client.Pusher;
@@ -15,6 +26,8 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
 	final String channelName;
 	final String eventName;
 	final Pusher pusher;
+	Logger log = Logger.getLogger(Listener.class.getName());
+	
 	private final long startTime = System.currentTimeMillis();
 	
     public static void main(final String[] args) {
@@ -64,11 +77,17 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
                 eventName, channelName, data));
 
         final Gson gson = new Gson();
+        String datos;
+        
         @SuppressWarnings("unchecked")
-        final Map<String, String> jsonObject = gson.fromJson(data, Map.class);
-        System.out.println(jsonObject); //Debug
-        if (jsonObject.get("command").equals("GET")) {
-        	
+        final Map<String, String> mapa = gson.fromJson(data, Map.class);
+        System.out.println(mapa); //Debug
+        if (mapa.get("command").equals("GET")) {
+        	Gson json = new Gson();
+        	Map<String, Object> map = json.fromJson(getLocalHost("/ControlServlet"), HashMap.class);
+        	List<Map<String, String>> l = json.fromJson(getLocalHost("/HistoryServlet?mode=last&numLines=24"), List.class);
+        	map.put("lastLines", l);
+        	System.out.println("Recibidos\n\n" + json.toJson(map));
         }
     }
 
@@ -80,5 +99,29 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
 
     private long timestamp() {
         return System.currentTimeMillis() - startTime;
+    }
+    
+    private String getLocalHost(String url) {
+    	String ret = "";
+    	try {
+    		URLConnection con = new URL("http://localhost:8080/HomeControl"+url).openConnection();
+    		con.setRequestProperty("Accept-Charset", "UTF-8");
+    		InputStream resp = con.getInputStream();
+    		BufferedReader reader = new BufferedReader(new InputStreamReader(resp));
+    		StringBuilder result = new StringBuilder();
+    		String line;
+    		while((line = reader.readLine()) != null) {
+    		    result.append(line);
+    		}
+    		ret = result.toString();
+    	} catch (IOException e) {
+    		log.log(Level.SEVERE, "Error conectando con: " + url);
+			log.log(Level.SEVERE, e.toString(), e);
+    	}
+    	return ret;
+    }
+    
+    private void sendLocalHost(String url) {
+    	
     }
 }

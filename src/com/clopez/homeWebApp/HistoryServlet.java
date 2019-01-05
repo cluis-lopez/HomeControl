@@ -55,10 +55,6 @@ public class HistoryServlet extends HttpServlet {
 			ret = "NOT OK";
 		}
 		
-		for (String s: lineas) {
-			log.log(Level.INFO, s);;
-		}
-		
 		for (int i = lineas.size(); i > 0 ; i--) {
 			String s = lineas.get(i-1);
 			String[] token = s.split(" ");
