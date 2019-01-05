@@ -56,7 +56,7 @@
 
 	<target name="StartService"
 		description="Start Homecontrol Service at the Raspberry">
-		<echo>Stopping HomeControl</echo>
+		<echo>Starting HomeControl</echo>
 		<sshexec host="192.168.1.16" username="pi" password="${pi-password}"
 			command="sudo systemctl start HomeControl" />
 	</target>
