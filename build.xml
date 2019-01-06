@@ -58,14 +58,14 @@
 		description="Start Homecontrol Service at the Raspberry">
 		<echo>Starting HomeControl</echo>
 		<sshexec host="192.168.1.16" username="pi" password="${pi-password}"
-			command="sudo systemctl start HomeControl" />
+			command="sudo systemctl start HomeControl.target" />
 	</target>
 
 	<target name="StopService"
 		description="Stop Homecontrol Service at the Raspberry">
 		<echo>Stopping HomeControl</echo>
 		<sshexec host="192.168.1.16" username="pi" password="${pi-password}"
-			command="sudo systemctl stop HomeControl" />
+			command="sudo systemctl stop HomeControl.target" />
 	</target>
 
 	<target name="war" depends="">

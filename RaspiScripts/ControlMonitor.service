@@ -1,0 +1,15 @@
+[Unit]
+Description=Control Monitor
+PartOf=HomeControl.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash ControlMonitor.script
+WorkingDirectory=/root
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=HomeControl.target

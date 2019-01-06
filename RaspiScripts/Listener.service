@@ -1,9 +1,10 @@
 [Unit]
-Description=HomeControl Service
-After=network.target
+Description=Listener
+PartOf=HomeControl.target
 
 [Service]
-ExecStart=/bin/bash HomeControl
+Type=simple
+ExecStart=/bin/bash Listener.script
 WorkingDirectory=/root
 StandardOutput=inherit
 StandardError=inherit
@@ -11,4 +12,4 @@ Restart=always
 User=root
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=HomeControl.target

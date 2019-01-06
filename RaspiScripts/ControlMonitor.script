@@ -13,4 +13,5 @@ else
         echo "Ya existe un fichero Historico.log"
 fi
 
+# Ejecutamos el monitor
 java com.clopez.homecontrol.ControlMonitor $webapp

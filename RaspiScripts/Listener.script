@@ -1,0 +1,7 @@
+export CLASSPATH=/var/lib/tomcat8/webapps/HomeControl/WEB-INF/classes:/var/lib/tomcat8/webapps/HomeControl/WEB-INF/lib/*
+
+appkey=35300c34839e8e048296
+
+echo "Ejecutando el Listener"
+# Ejecutamos el Listener (paso de mensajes entre Pusher y la aplicacion local)
+java com.clopez.gateway.Listener $appkey

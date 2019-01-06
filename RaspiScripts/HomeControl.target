@@ -1,0 +1,8 @@
+[Unit]
+Description=HomeControl Main Daemon
+After=network.target
+AllowIsolate=yes
+
+[Install]
+WantedBy=multi-user.target
+

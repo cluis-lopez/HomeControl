@@ -82,13 +82,14 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
         
         @SuppressWarnings("unchecked")
         final Map<String, String> mapa = gson.fromJson(data, Map.class);
-        System.out.println(mapa); //Debug
+        log.log(Level.INFO, "Recibidos desde RaspiGateway: "+mapa.toString());
+        
         if (mapa.get("command").equals("GET")) {
         	Gson json = new Gson();
         	Map<String, Object> map = json.fromJson(getLocalHost("/ControlServlet"), HashMap.class);
         	List<Map<String, String>> l = json.fromJson(getLocalHost("/HistoryServlet?mode=last&numLines=24"), List.class);
         	map.put("chart", l);
-        	System.out.println("Recibidos\n\n" + json.toJson(map));
+        	// System.out.println("Recibidos\n\n" + json.toJson(map));
         	
         	//Send data to Raspi Gateway servlet
         	
@@ -112,6 +113,7 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
 	    		while((line = reader.readLine()) != null) {
 	    		    result.append(line);
 	    		}
+	    		
 	    		log.log(Level.INFO, "RaspiGateway: "+result.toString());
 				
 			} catch (IOException e) {
@@ -119,6 +121,10 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
 				log.log(Level.SEVERE, e.toString(), e);
 			}
         	
+        }
+        
+        if (mapa.get("command").equals("CONTROL")) {
+        	triggerLocalHost("ControlServlet", mapa.get("data"));
         }
     }
 
@@ -152,7 +158,34 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
     	return ret;
     }
     
-    private void triggerLocalHost(String url, String user, String data) {
-    	
+    private void triggerLocalHost(String url, String data) {
+    	Gson json = new Gson();
+    	Map<String, String> map = json.fromJson(data, HashMap.class); 
+    	try {
+			URLConnection con = new URL("http://localhost:8080/HomeControl/"+url).openConnection();
+			con.setDoOutput(true); //POST request
+			con.setRequestProperty("Accept-Charset", "UTF-8");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			try (OutputStream output = con.getOutputStream()) {
+	        	String query = String.format("clientMode=%s&clientTemp=%s",
+	        			map.get("clientMode"),
+	        			map.get("clientTemp"));
+			    output.write(query.getBytes("UTF-8"));
+			}
+			
+			InputStream resp = con.getInputStream();
+    		BufferedReader reader = new BufferedReader(new InputStreamReader(resp));
+    		StringBuilder result = new StringBuilder();
+    		String line;
+    		while((line = reader.readLine()) != null) {
+    		    result.append(line);
+    		}
+    		
+    		log.log(Level.INFO, "ControlServlet: " + result.toString());
+			
+		} catch (IOException e) {
+    		log.log(Level.SEVERE, "Error conectando con Google Servlet");
+			log.log(Level.SEVERE, e.toString(), e);
+		}
     }
 }
