@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
 	final String channelName;
 	final String eventName;
 	final Pusher pusher;
+	final String GoogleEndPoint = "http://192.168.1.35:8080/RaspiGateway"; //Ojo ... cambiar a Google
 	Logger log = Logger.getLogger(Listener.class.getName());
 	
 	private final long startTime = System.currentTimeMillis();
@@ -77,7 +79,6 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
                 eventName, channelName, data));
 
         final Gson gson = new Gson();
-        String datos;
         
         @SuppressWarnings("unchecked")
         final Map<String, String> mapa = gson.fromJson(data, Map.class);
@@ -86,8 +87,38 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
         	Gson json = new Gson();
         	Map<String, Object> map = json.fromJson(getLocalHost("/ControlServlet"), HashMap.class);
         	List<Map<String, String>> l = json.fromJson(getLocalHost("/HistoryServlet?mode=last&numLines=24"), List.class);
-        	map.put("lastLines", l);
+        	map.put("chart", l);
         	System.out.println("Recibidos\n\n" + json.toJson(map));
+        	
+        	//Send data to Raspi Gateway servlet
+        	
+        	try {
+				URLConnection con = new URL(GoogleEndPoint).openConnection();
+				con.setDoOutput(true); //POST request
+				con.setRequestProperty("Accept-Charset", "UTF-8");
+				con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+				try (OutputStream output = con.getOutputStream()) {
+		        	String query = String.format("user=%s&password=%s&json=%s",
+		        			mapa.get("user"),
+		        			"myInternalPassw0rd",
+		        			json.toJson(map));
+				    output.write(query.getBytes("UTF-8"));
+				}
+				
+				InputStream resp = con.getInputStream();
+	    		BufferedReader reader = new BufferedReader(new InputStreamReader(resp));
+	    		StringBuilder result = new StringBuilder();
+	    		String line;
+	    		while((line = reader.readLine()) != null) {
+	    		    result.append(line);
+	    		}
+	    		log.log(Level.INFO, "RaspiGateway: "+result.toString());
+				
+			} catch (IOException e) {
+	    		log.log(Level.SEVERE, "Error conectando con Google Servlet");
+				log.log(Level.SEVERE, e.toString(), e);
+			}
+        	
         }
     }
 
@@ -121,7 +152,7 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
     	return ret;
     }
     
-    private void sendLocalHost(String url) {
+    private void triggerLocalHost(String url, String user, String data) {
     	
     }
 }

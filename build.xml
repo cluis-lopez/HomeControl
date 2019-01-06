@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="tomcat-demo" default="war" basedir=".">
+<project name="Tomcat HomeControl" default="war" basedir=".">
 	<property file="build.properties" />
 
 	<property name="war-file-name" value="${project-name}.war" />
