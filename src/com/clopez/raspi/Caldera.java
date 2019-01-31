@@ -48,7 +48,6 @@ public class Caldera {
 			in.close();
 		} catch (IOException e){
 			log.log(Level.SEVERE, "Imposible conectarse a la caldera");
-			log.log( Level.SEVERE, e.toString(), e );
 			return -1;
 		}
 		return -1;
@@ -65,7 +64,6 @@ public class Caldera {
 			result[0] =  con.getResponseCode();
 		} catch (IOException e){
 			log.log(Level.SEVERE, "Imposible conectarse a la caldera");
-			log.log( Level.SEVERE, e.toString(), e );
 		}
 		
 		try {
@@ -75,7 +73,6 @@ public class Caldera {
 			result[1] =  con.getResponseCode();
 		} catch (IOException e){
 			log.log(Level.SEVERE, "Imposible conectarse a la caldera");
-			log.log( Level.SEVERE, e.toString(), e );
 		}
 		return result;
 	}

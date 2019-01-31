@@ -1,6 +1,8 @@
 package com.clopez.gateway;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,10 +12,10 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.clopez.homecontrol.variablesExternas;
 import com.google.gson.Gson;
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
@@ -27,7 +29,7 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
 	final String channelName;
 	final String eventName;
 	final Pusher pusher;
-	final String GoogleEndPoint = "http://192.168.1.35:8080/RaspiGateway"; //Ojo ... cambiar a Google
+	final String GoogleEndPoint; //Ojo ... cambiar a Google
 	Logger log = Logger.getLogger(Listener.class.getName());
 	
 	private final long startTime = System.currentTimeMillis();
@@ -37,7 +39,20 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
     }
     
 	public Listener (final String args[]) {
-		apiKey = args.length > 0 ? args[0] : "InvalidKey";
+		String path = args[0] + "/";
+		System.out.println("Path : " + path );
+		InputStream in = null;
+		try {
+			in = new FileInputStream(path+"WEB-INF/Properties");
+		} catch (FileNotFoundException e) {
+			log.log(Level.SEVERE, "Error de entrada/salida al abrir el fichero de Propiedades");
+			log.log(Level.SEVERE, e.toString(), e);
+		}
+		variablesExternas v = new variablesExternas(in, log);
+		log.setLevel(Level.parse(v.get("LogLevel")));
+		
+		apiKey = v.get("Pusher_ApiKey");
+		GoogleEndPoint = v.get("Google_EndPoint");
 		channelName = "datosToRaspi";
 		eventName = "ordenFromWebClient";
 		final PusherOptions options = new PusherOptions().setEncrypted(true);

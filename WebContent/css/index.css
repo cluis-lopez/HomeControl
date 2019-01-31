@@ -173,7 +173,7 @@
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	width: 75%;
+	width: 50%;
 	margin-bottom: 40px;
 	margin-top: 25px;
 }
@@ -203,5 +203,5 @@
 }
 
 .insideabout a {
-	text-decoration:none;
+	text-decoration: none;
 }
