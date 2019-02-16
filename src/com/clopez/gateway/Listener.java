@@ -104,7 +104,6 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
         	Map<String, Object> map = json.fromJson(getLocalHost("/ControlServlet"), HashMap.class);
         	List<Map<String, String>> l = json.fromJson(getLocalHost("/HistoryServlet?mode=last&numLines=24"), List.class);
         	map.put("chart", l);
-        	// System.out.println("Recibidos\n\n" + json.toJson(map));
         	
         	//Send data to Raspi Gateway servlet
         	
@@ -140,6 +139,10 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
         
         if (mapa.get("command").equals("CONTROL")) {
         	triggerLocalHost("ControlServlet", mapa.get("data"));
+        }
+        
+        if (mapa.get("command").equals("PROGRAMA")) {
+        	triggerLocalHost("CalendarServlet", mapa.get("data"));
         }
     }
 
