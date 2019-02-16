@@ -22,5 +22,6 @@ For Internet access and control we use a gateway based on Pusher (cloud based we
 
 - Pusher will maintain the chat-like message passing gateway between the internal server in the Raspberry and the external webapp at Google. In order to do so:
 
-   - A small app in the Rasperry (written in Node.js because there're no client Java libraries for Pusher) will open a channel with Pusher thought an Auth servlet hosted in Google.
+   - A listener Java app (Listener.java) running as a daemon in the Rasperry will open a channel with Pusher listening to messages comming from there. Those messages are triggered by a servlet running at Google requesting actions in the Raspberry.
+   
    - The HTML5-Javascript client running in the user web browser (mostly mobile) will do the same after auth request. If authentication is successful, will also join the same "chat" channel on Pusher and willl send JSON requests to the "chat server" runnning on Google. Pusher will drive these requests to the Node.js mini-app in the Raspberry which in turn will invoke the internal services (the same Servlets used by the internal application).

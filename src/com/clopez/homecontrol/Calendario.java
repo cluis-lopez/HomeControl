@@ -18,6 +18,10 @@ public class Calendario {
 			}
 	}
 	
+	public Calendario(float dias[][][]) {
+		this.dias = dias;
+	}
+	
 	public float [][][] getDias() {
 		return dias;
 	}
@@ -34,36 +38,6 @@ public class Calendario {
 	}
 	
 	/**
-	 * @param dia The day of the week (0: Monday, 1: Tuesday ... , 6: Sunday)
-	 * @param horainicio The initial hour:minute to program (rounded to previous half hour. Ex: 18:29 will round to 18:00)
-	 * @param horafin The last hor:minute to program (rounded to previous half hour. Ex: 18:47 will round to 18:30)
-	 * @param temp The temperature to program during the period
-	 */
-	public void setTempRange(int dia, int horaInicio, int minutoInicio, int horaFin, int minutoFin, float temp) {
-		if ((horaInicio > horaFin) || (horaInicio == horaFin && minutoInicio >= minutoFin))
-				return;
-		int minInicio = minutoInicio/30;
-		int minFin = minutoFin/30;
-		for (int i = horaInicio; i <= horaFin; i++) {
-			if (i == horaInicio && minInicio == 1) {
-				dias[dia][i][1] = temp;
-				continue;
-			} else if (i == horaFin && minFin == 0) {
-				dias[dia][i][0] = temp;
-				continue;
-			}
-			dias[dia][i][0] = dias[dia][i][1] = temp;
-		}
-	}
-	
-	public void copyProgramaDia(int diaorigen, int diadestino) {
-		for (int i=0; i<24; i++) {
-			dias[diadestino][i][0] = dias[diaorigen][i][0];
-			dias[diadestino][i][1] = dias[diaorigen][i][1];
-		}
-	}
-	
-	/**
 	 * @return The temperature programmed for the current day of the week at the current time
 	 */
 	public float getTempTargetNow() {
@@ -76,7 +50,7 @@ public class Calendario {
 	 * @return The programmed temperature for that date and time
 	 */
 	public float getTempTargetDate(LocalDateTime dt) { // Ojo posible bug. If Domingo = 0, diasemana = -1
-		int diasemana = dt.getDayOfWeek().getValue() - 1; //El dia de la semana actual Lunes = 0, Martes = 1, ... Domingo = 6
+		int diasemana = dt.getDayOfWeek().getValue(); //El dia de la semana actual Lunes = 0, Martes = 1, ... Domingo = 6
 		int hora = dt.getHour(); // Hora entre 0 y 23
 		int minuto = dt.getMinute();
 		int min = minuto/30; // min=0 if 0<= minuto <29 or min=1 if 30<=minuto<60
@@ -91,15 +65,17 @@ public class Calendario {
 	/**
 	 *  Just printout the calendar for debugging purposes
 	 */
-	public void printCalendario() {
+	public String printCalendario() {
 		String[] diasSemana= {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
+		String ret = "";
 		
 		for (int i = 0; i<7; i++) {
-			System.out.println(diasSemana[i]);
+			ret = ret + diasSemana[i] + "\n";
 			for (int j=0; j<24; j++) {
-				System.out.println(j+":00 "+j+":29 => "+dias[i][j][0]+"      "+j+":30 "+j+":59 => "+dias[i][j][1]);
+				ret = ret + (j+":00 "+j+":30 => "+dias[i][j][0]+"      "+j+":30 "+j+":59 => "+dias[i][j][1]) + "\n";
 			}
 		}
+		return ret;
 	}
 	
 }

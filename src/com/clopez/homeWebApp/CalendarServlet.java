@@ -2,6 +2,7 @@ package com.clopez.homeWebApp;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,7 +47,11 @@ public class CalendarServlet extends HttpServlet {
 		String program = req.getParameter("program");
 		
 		Gson json = new Gson();
-		Calendario cl = json.fromJson(program, Calendario.class);
+		float dias[][][] = new float[7][24][2];
+		dias = json.fromJson(program, dias.getClass());
+		Calendario cl = new Calendario(dias);
+		
+		log.log(Level.INFO, "Ajustando el programa "+ cl.printCalendario());
 		global.setCalendario(cl);
 		
 		resp.setContentType("text/plain");

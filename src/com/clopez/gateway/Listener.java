@@ -141,8 +141,8 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
         	triggerLocalHost("ControlServlet", mapa.get("data"));
         }
         
-        if (mapa.get("command").equals("PROGRAMA")) {
-        	triggerLocalHost("CalendarServlet", mapa.get("data"));
+        if (mapa.get("command").equals("PROGRAMAR")) {
+        	storeProgram(mapa.get("data"));
         }
     }
 
@@ -203,6 +203,36 @@ public class Listener implements ConnectionEventListener, ChannelEventListener {
 			
 		} catch (IOException e) {
     		log.log(Level.SEVERE, "Error conectando con Google Servlet");
+			log.log(Level.SEVERE, e.toString(), e);
+		}
+    }
+    
+    private void storeProgram(String data) {
+    	Gson json = new Gson();
+    	Map<String, String> map = json.fromJson(data, HashMap.class);
+    	try {
+			URLConnection con = new URL("http://localhost:8080/HomeControl/CalendarServlet").openConnection();
+			con.setDoOutput(true); //POST request
+			con.setRequestProperty("Accept-Charset", "UTF-8");
+			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			try (OutputStream output = con.getOutputStream()) {
+	        	String query = String.format("program=%s",
+	        			map.get("program"));
+			    output.write(query.getBytes("UTF-8"));
+			}
+			
+			InputStream resp = con.getInputStream();
+    		BufferedReader reader = new BufferedReader(new InputStreamReader(resp));
+    		StringBuilder result = new StringBuilder();
+    		String line;
+    		while((line = reader.readLine()) != null) {
+    		    result.append(line);
+    		}
+    		
+    		log.log(Level.INFO, "ControlServlet: " + result.toString());
+			
+		} catch (IOException e) {
+    		log.log(Level.SEVERE, "Error conectando con CalendarServlet");
 			log.log(Level.SEVERE, e.toString(), e);
 		}
     }
