@@ -50,7 +50,7 @@ public class Calendario {
 	 * @return The programmed temperature for that date and time
 	 */
 	public float getTempTargetDate(LocalDateTime dt) { // Ojo posible bug. If Domingo = 0, diasemana = -1
-		int diasemana = dt.getDayOfWeek().getValue(); //El dia de la semana actual Lunes = 0, Martes = 1, ... Domingo = 6
+		int diasemana = dt.getDayOfWeek().getValue() - 1; //El dia de la semana actual Lunes = 0, Martes = 1, ... Domingo = 6
 		int hora = dt.getHour(); // Hora entre 0 y 23
 		int minuto = dt.getMinute();
 		int min = minuto/30; // min=0 if 0<= minuto <29 or min=1 if 30<=minuto<60
