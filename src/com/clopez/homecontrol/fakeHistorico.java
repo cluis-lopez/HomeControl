@@ -16,7 +16,7 @@ import com.clopez.homecontrol.GlobalVars.ModeOp;
 public class fakeHistorico {
 	static Logger log = Logger.getLogger(ControlMonitor.class.getName());
 	static FileHandler fd;
-	final static int LINEAS = 100; //Numero de lineas a escribir
+	static final int LINEAS = 100; //Numero de lineas a escribir
 
 	public static void main(String[] args) {
 		String path = args[0] + "/";

@@ -49,8 +49,11 @@ public class Calendario {
 	 * @param dt The date and time 
 	 * @return The programmed temperature for that date and time
 	 */
-	public float getTempTargetDate(LocalDateTime dt) { // Ojo posible bug. If Domingo = 0, diasemana = -1
-		int diasemana = dt.getDayOfWeek().getValue() - 1; //El dia de la semana actual Lunes = 0, Martes = 1, ... Domingo = 6
+	public float getTempTargetDate(LocalDateTime dt) {
+		int diasemana = dt.getDayOfWeek().getValue(); //El dia de la semana actual Lunes = 1, Martes = 2, ... Domingo = 7
+		// Warning: Javascript asume Domingo = 0, Lunes = 1, etc. necesitamos convertirlo
+		if (diasemana == 7 )
+			diasemana = 0;
 		int hora = dt.getHour(); // Hora entre 0 y 23
 		int minuto = dt.getMinute();
 		int min = minuto/30; // min=0 if 0<= minuto <29 or min=1 if 30<=minuto<60
